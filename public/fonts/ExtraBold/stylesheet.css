@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Open Sans';
+    src: url('OpenSans-Extrabold.eot');
+    src: url('OpenSans-Extrabold.eot?#iefix') format('embedded-opentype'),
+        url('OpenSans-Extrabold.woff2') format('woff2'),
+        url('OpenSans-Extrabold.woff') format('woff'),
+        url('OpenSans-Extrabold.ttf') format('truetype'),
+        url('OpenSans-Extrabold.svg#OpenSans-Extrabold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+

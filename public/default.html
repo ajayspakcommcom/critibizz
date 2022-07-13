@@ -1,0 +1,216 @@
+<link rel="stylesheet" href="./css/bootstrap.min.css" />
+<link rel="stylesheet" href="./css/admin.css" />
+<script src="./js/jquery.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+
+<!--<h1>welcome to my admin part</h1>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+Login below<br><br>
+<form id="frm1" method="post" action="/admin/api"  onsubmit="validateUserDetails();return false;">
+<label>username</label><br><input type="text" placeholder="test@bsv.com" id="username" name="username" /><br><br>
+<label>password</label><br><input type="password" id="password" name="password" placeholder="password"/><br><br>
+
+<button>Login</button>
+</form>-->
+
+<div class="container">
+    <h2>Submitted Product</h2>         
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>
+            <span>Select All</span>
+            <input type="checkbox" id="selectAll" />
+          </th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Objective</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox" class="selectCheck" /></td>
+          <td>Thymogam</td>
+          <td>Lorem ipsum dolor sit amet,</td>
+          <td>To establish e-ATG as first line management of Aplastic Anaemia Patients</td>
+          <td><a href="javascript:void(0)" onclick="onEdit()">Edit</a></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" class="selectCheck" /></td>
+            <td>Thymogam</td>
+            <td>Lorem ipsum dolor sit amet,</td>
+            <td>To establish e-ATG as first line management of Aplastic Anaemia Patients</td>
+            <td><a href="javascript:void(0)" onclick="onEdit()">Edit</a></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="selectCheck" /></td>
+            <td>Thymogam</td>
+            <td>Lorem ipsum dolor sit amet,</td>
+            <td>To establish e-ATG as first line management of Aplastic Anaemia Patients</td>
+            <td><a href="javascript:void(0)" onclick="onEdit()">Edit</a></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="selectCheck" /></td>
+            <td>Thymogam</td>
+            <td>Lorem ipsum dolor sit amet,</td>
+            <td>To establish e-ATG as first line management of Aplastic Anaemia Patients</td>
+            <td><a href="javascript:void(0)" onclick="onEdit()">Edit</a></td>
+          </tr>
+      </tbody>
+    </table>
+    <div class="text-right">
+      <input type="submit" value="Submit" />
+    </div>
+</div>
+
+  <form>
+    <div class="screen-3 admin-edit hide">
+      <div class="modal fade in" id="myModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <form id="frmLogData" method="post" action="/api" onsubmit="validateLogData();return false;">
+                <input type="hidden" id="txtSelectedMedId" value="">
+                <div class="project-form">
+                  <div>
+                      <img src="img/meds/thymogam.png" alt="product 1" class="img-responsive" id="selectedMedImg">
+                      <div class="prod-desc">
+                          <strong>Product Description</strong>
+                          <p id="selectedMedTxt">Lorem ipsum dolor sit amet, </p>
+                      </div>
+                      <div class="objective">
+                        <strong>Objective</strong>
+                        <p id="selectedMedObj">To establish e-ATG as first line management of Aplastic Anaemia Patients</p>
+                      </div>
+                  </div>
+                  <div>
+    
+                    <div class="object-form">
+                      <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" id="logdate" name="logdate" class="form-control">
+                          </div>
+                        </div>
+  
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div class="form-group">
+                            <label for="patients">No. of Patients</label>
+                            <select class="form-control" id="patients" name="patients">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                              <option value="6">6</option>
+                              <option value="7">7</option>
+                              <option value="8">8</option>
+                              <option value="9">9</option>
+                              <option value="10">10</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div class="form-group">
+                            <label for="txtDrName">Doctor Name</label>
+                            <input type="text" id="txtDrName" name="txtDrName" class="form-control">
+                          </div>
+                        </div>
+                      </div>
+  
+                       <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div class="form-group">
+                            <label for="txtDrCode">Doctor Code</label>
+                            <input type="text" class="form-control" id="txtDrCode" name="txtDrCode">
+                          </div>
+                        </div>
+                        
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div class="form-group">
+                            <label for="vials">No. of Vials</label>
+                            <select class="form-control" id="vials" name="vials">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                              <option value="6">6</option>
+                              <option value="7">7</option>
+                              <option value="8">8</option>
+                              <option value="9">9</option>
+                              <option value="10">10</option>
+                            </select>
+                          </div>
+                        </div>
+  
+                      </div>
+    
+                      <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div class="form-group">
+                            <label for="hospitalList">Name of the Hospital</label>
+                            <input type="text" class="form-control" id="hospitalList" name="hospitalList">
+                          </div>
+  
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div class="form-group">
+                            <label for="txtCity">City</label>
+                            <input type="text" class="form-control" id="txtCity">
+                          </div>
+                        </div>
+                      </div>
+    
+                      <div class="row">
+                          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                              <button type="button" class="btn btn-default btn-grad" onclick="onRejected()">Reject</button>
+                          </div>
+                          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                              <button type="button" class="btn btn-default btn-grad" onclick="onApproved()">Approve</button>
+                          </div>
+                      </div>
+                    </div>  
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </form>
+
+
+<!--<script src="../public/js/common.js"></script>
+<script src="../public/js/app.js"></script> -->
+
+<!--<script src="js/jquery.min.js"></script>-->
+<!--<script src="js/app.js"></script>-->
+
+<script>
+
+    function onRejected() {
+        $('.admin-edit').addClass('hide');
+    }
+
+    function onEdit() {
+        $('.admin-edit').removeClass('hide');
+    }
+
+    function onApproved() {
+        console.log('approved');
+        $('.admin-edit').addClass('hide');
+    }
+
+    $("#selectAll").click(function () {
+        $(".selectcheck").prop('checked', $(this).prop('checked'));
+    });
+
+</script>

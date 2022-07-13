@@ -1,0 +1,283 @@
+<html class="openNav">
+
+<head>
+    <title>Path 2 Care: Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="admin/css/admin.css" />
+    <script src="admin/js/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div class="primary-nav" id="loadAdminHeader"></div>
+    <div class="new-wrapper">
+        <div id="main">
+            <div class="main-website-link">
+                <a href="/" target="_blank">
+                    <img src="img/p2c.png" alt="path 2" />
+                </a>
+            </div>
+            <div id="main-contents">
+                <h1>Report</h1>
+                <div class="dashboard-wrapper">
+                    <div>
+                        <div class="text-right export-excel m-t-30">
+                            <a  href="javascript:void(0);" type="button" id="exporttoexcel" onclick="exportToExcel()">
+                                <img src="admin/img/excel.png" alt="export to excel" />   
+                            </a>
+                        </div>
+                        <form class="custom-form-design">
+                            
+                            <div class="form-group flex">
+                                <input type="text" id="from" name="from" placeholder="From" class="form-control" />
+                                <input type="text" id="to" name="to" placeholder="To" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <select class="form-control" id="emp" name="emp">
+                                    <option value="0" selected>--Select Employeee--</option>
+                                  </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" id="cmbMedicine" name="cmbMedicine">
+                                    <option value="0" selected>--Select Medicine--</option>
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
+                                <select class="form-control" id="cmbHospitalList" name="cmbHospitalList">
+                                    <option value="0" selected>Select Hospital</option>
+                                    
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
+                                <select class="form-control" id="cmbHospitalCity" name="cmbHospitalCity">
+                                    <option value="0" selected>Select City</option>
+                                  </select>
+                            </div>
+
+                            <button type="button" class="btn btn-default default-btn" onclick="loadDataForReport1()">Submit</button> &nbsp;
+                            <button type="button" class="btn btn-default" onclick="resetFilter();loadDataForReport1()">Reset</button>
+
+                        </form>
+    
+                          <table id="example" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>KAM</th>
+                                    <th>Order Date</th>
+                                    <th>Brand</th>
+                                    <th>Doctor</th>
+                                    <th>No of Paitent</th>
+                                    <th>No of Vials</th>
+                                    <th>Hospital</th>
+                                    <th>City</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loader-wrapper none">
+        <div class="loader"></div>
+    </div>
+
+    <script src="admin/js/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+    <!--Data Table-->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css" />
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />
+    <!--Data Table-->
+
+    <script src="/admin/js/admin.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "iDisplayLength": 100,
+                "language": {
+                    emptyTable: "No data available in table", // 
+                    loadingRecords: "Please wait .. ", // default Loading...
+                    zeroRecords: "No matching records found"
+                }
+            });
+        });
+
+    </script>
+
+<script>
+
+function resetFilter(){
+    $('#emp').val(0);
+    $('#cmbMedicine').val(0);
+    $('#cmbHospitalList').val(0);
+    $('#cmbHospitalCity').val(0);
+    $('#from').val(' ');
+    $('#to').val(' ');
+}
+function loadDataForReport1() {
+            $('body').addClass('overflow');
+            $('.loader-wrapper').removeClass('none');
+     
+          let param = {
+            method: 'loadDataForReport1',
+            empId: ($('#emp').val() == '0') ? null : parseInt($('#emp').val()),
+            medId: ($('#cmbMedicine').val() == '0') ? null : parseInt($('#cmbMedicine').val()),
+            hospitalName: ($('#cmbHospitalList').val() == '0') ? null : ($('#cmbHospitalList').val()), //
+            hospitalCity: ($('#cmbHospitalCity').val() == '0') ? null : ($('#cmbHospitalCity').val()),
+            fromDate: ($('#from').val().length === 0 ) ? null : ($('#from').val()),
+            toDate: ($('#to').val().length === 0 ) ? null : ($('#to').val())
+          };
+         // console.log(param);
+          axios
+            .post("/api", param)
+            .then((response) => {
+
+                populateDataTable(response.data);
+                $('body').removeClass('overflow');
+                $('.loader-wrapper').addClass('none');
+            })
+            .catch((err) => {
+              console.log("inside catch");
+              console.log(err);
+            });
+        }
+    
+function populateDataTable(data) {
+//console.log("populating data table...");
+// clear the table before populating it with more data
+$("#example").DataTable().clear();
+    var length = data.length;
+//  console.log(length)
+    if(length == 0) {
+    $("#example").DataTable().clear();
+    } else {
+    data.forEach(item => {
+        $('#example').dataTable().fnAddData( [
+            item.Seller,
+            item.OrderDate,
+            item.medicineName,
+            item.DoctorsName,
+            item.noOfPaitents,
+            item.noOfVials,
+            item.hospitalName,
+            item.HospitalCity,
+            
+    ]);        
+    });
+    }
+}
+
+loadDataForReport1(); 
+
+function exportToExcel() {
+    let table = $('#example').dataTable();
+    window.open('data:application/vnd.ms-excel,' + encodeURIComponent(table[0].outerHTML));
+}
+
+</script>
+
+<script>
+    $( function() {
+      var dateFormat = "mm/dd/yy",
+        from = $( "#from" )
+          .datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 1,
+            dateFormat: "dd-M-yy"
+          })
+          .on( "change", function() {
+            to.datepicker( "option", "minDate", getDate( this ) );
+          }),
+        to = $( "#to" ).datepicker({
+          defaultDate: "+1w",
+          changeMonth: true,
+          numberOfMonths: 1,
+            dateFormat: "dd-M-yy"
+        })
+        .on( "change", function() {
+          from.datepicker( "option", "maxDate", getDate( this ) );
+        });
+   
+      function getDate( element ) {
+        var date;
+        try {
+          date = $.datepicker.parseDate( dateFormat, element.value );
+        } catch( error ) {
+          date = null;
+        }
+   
+        return date;
+      }
+
+      function loadFilters() {
+        let param = {
+            method: 'loadFilters'
+          };
+          axios
+            .post("/api", param)
+            .then((response) => {
+               // console.log(response.data);
+                // 0 --> USERS
+                // 1 --> MEDICINES
+                // 2 --> HOSPITAL NAME
+                // 3 --> HOSPITAL CITY
+                
+                //0 --> USERS
+                let filters = response.data;
+                filters.forEach((filter, index) => {
+                 //   console.log(index);
+                    let element, label;
+                    switch (index) {
+                        case 0:
+                            element = 'emp';
+                            label = 'Employee';
+                        break;
+                        case 1:
+                            element = 'cmbMedicine';
+                            label = 'Medicine';
+                        break;
+                        case 2:
+                            element = 'cmbHospitalList';
+                            label = 'Hospital';
+                        break;
+                        case 3:
+                            element = 'cmbHospitalCity';
+                            label = 'City';
+                        break;
+                    }
+
+                    $('#'+element).empty();
+                    $('#'+element).append($('<option></option>').val(0).html('--Select '+label+' --'));
+                    $.each(filter, function(i, p) {
+                        $('#'+element).append($('<option></option>').val((p.displayId)? p.displayId : p.displayName).html(p.displayName));
+                    });
+                })
+            })
+            .catch((err) => {
+              console.log("inside catch");
+              console.log(err);
+            });
+      }
+
+      loadFilters();
+    } );
+</script>
+
+</body>
+
+</html>

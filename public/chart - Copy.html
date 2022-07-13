@@ -1,0 +1,140 @@
+<html class="openNav">
+<head>
+  <title>BSV 1: Dashboard</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="stylesheet" href="/css/bootstrap.min.css" /> -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css" />
+  <link rel="stylesheet" href="admin/css/admin.css" />
+  <script src="admin/js/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+</head>
+
+<body>
+
+  <div class="primary-nav">
+
+    <button href="javascript:void(0);" class="hamburger open-panel nav-toggle" id="nav-toggle">
+      <span class="screen-reader-text">Menu</span>
+    </button>
+
+    <nav role="navigation" class="menu">
+
+      <a href="/admin-dashbaord" class="logotype"><img src="img/logo.png" alt="" class="img-responsive" /></a>
+
+      <div class="overflow-container">
+
+        <ul class="menu-dropdown">
+
+          <li><a href="/admin-dashbaord">Dashboard</a><span class="icon"><i class="fa fa-dashboard"></i></span></li>
+
+          <li class="menu-hasdropdown">
+            <div class="dropdown-btnwrapper">
+              <a href="javascript:void(0);" class="dropdown-btn">Reports</a>
+              <img src="/admin/img/down-arrow.png" alt="icon" class="drop-icon" />
+            </div>
+            <ul class="sub-menu-dropdown">
+              <li><a href="/report">Report 1</a></li>
+            </ul>
+          </li>
+        </ul>
+
+      </div>
+
+    </nav>
+
+  </div>
+
+  <div class="new-wrapper">
+    <div id="main">
+      <div id="regions_div" style="width: calc(100% - 0px);height: 100vh;"></div>
+    </div>
+  </div>
+
+  <script>
+
+    function camelCaseText(txt) {
+      return txt.substr( 0, 1 ).toString().toUpperCase() + txt.substr( 1 ).toString().toLowerCase();
+    }
+
+    google.charts.load('current', {
+      'packages': ['geochart'],
+    });
+    google.charts.setOnLoadCallback(drawRegionsMap);
+
+    function drawRegionsMap() {
+
+      let param = {
+        parentId: 1,
+        method: 'getMychildforOrgChart'
+      };
+
+      axios
+        .post("/api", param)
+        .then((response) => {
+            var tree = [];
+            let data1 = response.data[0];
+            
+            var data2 = [];
+
+             data2.push(['State', 'xxxx', 'yyy']);
+             data2.push(['State', 'xxxx', 'yyy']);
+             data2.push( ["Delhi", '50000', 1111])
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'State');
+            data.addColumn('number', 'Total Potential');
+            data.addColumn('number', 'Actual Target');
+            data1.forEach(rec => { 
+              data.addRows([[camelCaseText(rec.stateName),  parseInt(rec.totalPoential), parseInt(rec.ActualTargetAchieved)]]);
+            });
+         
+
+            var options = {
+              region: 'IN', // India 
+              displayMode: 'markers', //If you want to highlight some cities
+              resolution: 'provinces', //If you want to display provinces in India
+              colorAxis: { colors: ['#1aa3ff', '#1aa3ff'] },
+              displayMode: 'regions'
+            };
+
+      var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+      google.visualization.events.addListener(chart, 'select', function () {
+        if (chart.getSelection()[0]) {
+          var selectionIdx = chart.getSelection()[0].row;
+          var countryName = data.getValue(selectionIdx, 0);
+          console.log('selectionIdx', selectionIdx);
+          console.log('countryName', countryName);
+          window.location.href = `hospital-list?id=${selectionIdx}&name=${countryName}`;
+        }
+      });
+
+      chart.draw(data, options);
+
+    });      
+    }
+  </script>
+
+<script>
+  const toggleBtn = document.getElementById('nav-toggle');
+
+  toggleBtn.addEventListener('click', () => {
+      let htmlElem = document.querySelector('html');
+      htmlElem.classList.toggle('openNav');
+  });
+
+  $('.dropdown-btnwrapper').on('click', function() {
+      let $this = $(this);
+      $this.parents('.menu-hasdropdown').find('.sub-menu-dropdown').toggleClass('active');
+  });
+
+</script>
+
+</body>
+
+</html>

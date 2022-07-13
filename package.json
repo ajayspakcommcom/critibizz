@@ -1,0 +1,16 @@
+{
+  "name": "critibizz",
+  "version": "1.0.0",
+  "description": "CritiBizz project made for SPAK by GS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "javascript",
+    "npm"
+  ],
+  "author": "GS",
+  "license": "ISC"
+}
