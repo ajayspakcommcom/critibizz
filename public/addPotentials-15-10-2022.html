@@ -1,0 +1,257 @@
+<html class="openNav">
+
+<head>
+    <title>Criti Bizz : Add Potential</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+    <script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div class="primary-nav" id="loadAdminHeader"></div>
+
+    <div class="new-wrapper">
+        <div id="main">
+            <div id="topnav"></div>
+            <div id="main-contents">
+                <h1 class="m-b-10"><span id="hospName"></span> <span id="detailCityName"></span></h1>
+                <form>
+                    <div class="container">
+                        <div class="custom-table form">
+                            <div class="zone-profile">
+                            </div>
+                        </div>
+                        <div class="hospital-grid-container addpotential" id="myhospitalMedDetails">
+                        </div>
+                        <div class="detail-footer addpotential">
+                            <div class="hospi-detail-btn-wrapper">
+                                <div class="form text-right">
+                                    <button type="button" class="btn addActualBtn" onclick="savePotentials()">Save
+                                        Potential
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="potential-divider"></div>
+                        <input type="text" id="txthids" />
+                        <table class="addPotentialTable">
+                            <thead>
+                                <tr>
+                                    <th>Employee Name</th>
+                                    <th>Hospital Name</th>
+                                    <th>Region</th>
+                                </tr>
+                            </thead>
+                            <tbody id="loadHospitalList"></tbody>
+                        </table>
+                    </div>
+            </div>
+            </form>
+
+        </div>
+    </div>
+    </div>
+
+    <div class="loader-wrapper none">
+        <div class="loader"></div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+
+
+    <script src="js/app.js"></script>
+
+    <script>
+
+
+
+        function savePotentials() {
+           // console.log('lets save all the details');
+            let userData = JSON.parse(localStorage.getItem("userData"))
+            empId = parseInt(userData.empId),
+                flag = true;
+            // check if any item is missing
+            $('#myhospitalMedDetails input:text').each(function () {
+                if (flag) {
+                    let val = $(this).val();
+                    if (val == "") {
+                        alert('Please enter Potentials for all the Brands')
+                        $(this).focus();
+                        flag = false;
+                        return;
+                    }
+                }
+
+            });
+           // console.log('flag ---->' + flag);
+            if (flag) {
+                $('.loader-wrapper').removeClass('none');
+                $('#myhospitalMedDetails input:text').each(function (i, e) {
+                    let medId = $(e).attr('id').split('-')[1];
+                    let val = $(e).val()
+                    let param = {
+                        method: 'saveHospitalPotentials',
+                        medID: medId,
+                        medVal: val,
+                        empId: empId,
+                        hospitalId: ($('#txthids').val())
+                    };
+                    axios
+                        .post("/api", param)
+                        .then((response) => {
+                            //console.log(response.data);
+                        });
+                    //console.log(param);
+                });
+                setTimeout(
+                    ($('.loader-wrapper').addClass('none'),  (document.location.href = '/thankyou'))
+                , 5000);
+                //
+            }
+
+
+        }
+        // Restricts input for the set of matched elements to the given inputFilter function.
+        (function ($) {
+            $.fn.inputFilter = function (callback, errMsg) {
+                return this.on("input keydown keyup mousedown mouseup select contextmenu drop focusout", function (e) {
+                    if (callback(this.value)) {
+                        // Accepted value
+                        if (["keydown", "mousedown", "focusout"].indexOf(e.type) >= 0) {
+                            $(this).removeClass("input-error");
+                            this.setCustomValidity("");
+                        }
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        // Rejected value - restore the previous one
+                        $(this).addClass("input-error");
+                        this.setCustomValidity(errMsg);
+                        this.reportValidity();
+                        this.value = this.oldValue;
+                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                    } else {
+                        // Rejected value - nothing to restore
+                        this.value = "";
+                    }
+                });
+            };
+        }(jQuery));
+
+        function getMedicineList() {
+            $('.loader-wrapper').removeClass('none');
+            let param = {
+                parentId: 1,
+                method: 'getMedicine'
+            };
+            var totalPotential = 0,
+                totalActual = 0;
+
+            axios
+                .post("/api", param)
+                .then((response) => {
+                    //  console.log(response.data);
+                    let medicines = response.data;
+                    let showHtml = [];
+                    medicines.forEach(rec => {
+                        showHtml.push(`<div>
+                          <table class="table table-bordered addpotential-table">
+                            <tbody>
+                              <tr>
+                                <td> <img src="img/meds/${rec.imageURL}" alt="${rec.name}" height="250" class="img-responsive" /></td>
+                                <!-- <td>${rec.medicineName}</td>-->
+                                <td>
+                                    <p>${rec.descp}</p>
+                                    <p>${rec.objective}</p>
+                                    <input type="text" maxlength="5" class="h-detail-input" id="txtmed-${rec.medID}" placeHolder="Add Potentials" />
+                                </td>
+                              </tr>
+                              <!--  <tr>
+                                <td><p>${rec.descp}</p></td>
+                              </tr>
+                              <tr>
+                                <td><p>${rec.objective}</p></td>
+                              </tr> 
+                              <tr>
+                                <td>
+                                  <input type="text" maxlength="5" class="h-detail-input" id="txtmed-${rec.medID}" placeHolder="Add Potentials" />
+                                </td>
+                              </tr>
+                            -->
+                            </tbody>
+                          </table>
+                        </div>`)
+                    });
+                   // console.log('this is getting called :1')
+                    $('#myhospitalMedDetails').html(showHtml.join(''));
+                    $('.loader-wrapper').addClass('none');
+                    //console.log('this is getting called :2')
+                    setNumericFields();
+                });
+        }
+
+        function setNumericFields() {
+          //  console.log('this is getting called :3')
+            $('#myhospitalMedDetails input:text').each(function () {
+                $(this).inputFilter(function (value) {
+                    return /^-?\d*$/.test(value);
+                }, "Must be an integer");
+            })
+        }
+
+        function getMyChildHostpitalList() {
+            // console.log('get my child hospital List');
+            let userData = JSON.parse(localStorage.getItem("userData"));
+
+            $('.loader-wrapper').removeClass('none');
+            let param = {
+                empId: parseInt(userData.empId),
+                method: 'myChildHospitalList'
+            };
+            var totalPotential = 0,
+                totalActual = 0;
+
+            axios
+                .post("/api", param)
+                .then((response) => {
+                    let hospitalList = response.data;
+                    let hids = [];
+                    let showHtml = [];
+                    hospitalList.forEach((item) => {
+                        hids.push(item.hospitalId);
+                        showHtml.push(` <tr>
+                         <td>${camelCaseText(item.EmpName)}</td>
+                          <td>${camelCaseText(item.hospitalName)}</td>
+                          <td>${item.regionName}</td>
+                        </tr>   `);
+                    });
+                    $('#loadHospitalList').html(showHtml.join(''));
+                    $('#txthids').val(hids.join(','));
+                });
+        }
+
+        function setUpPage() {
+            setupTopNav();
+            loadManagers();
+            getMedicineList();
+            getMyChildHostpitalList()
+        }
+
+        setUpPage();
+
+
+
+    </script>
+
+</body>
+
+</html>

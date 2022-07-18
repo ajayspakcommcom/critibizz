@@ -4,7 +4,8 @@
   "description": "CritiBizz project made for SPAK by GS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "keywords": [
     "nodejs",
@@ -12,5 +13,11 @@
     "npm"
   ],
   "author": "GS",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "mssql": "^8.1.2"
+  }
 }

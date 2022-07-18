@@ -13,9 +13,10 @@
 
   <div class="new-wrapper">
     <div id="main">
-     <div id="topnav"></div>
+      <div id="topnav"></div>
       <div id="main-contents">
-        <h1 class="m-b-10"><span id="hospName"></span> : Hospitals</h1>
+        <h1 class="m-b-10"><span id="hospName"></span> </h1>
+        <div id="dvEmpDetails"></div>
         <div class="container">
           <div class="custom-table custom-table-with-border">
             <div class="zone-profile">
@@ -49,7 +50,7 @@
                 </div>
 
                 <div class="form">
-                  <button type="button" onclick="getHospitalList();" class="btn">Go</button>
+                  <button type="button" onclick="getHospitalListByEmp();" class="btn">Go</button>
                 </div>
 
               </div>
@@ -61,7 +62,6 @@
               <thead>
                 <tr>
                   <th>Hospital Name</th>
-                  <th>Employee Name</th>
                   <th>Region</th>
                   <th>Actual Units</th>
                   <th>Potential Units</th>
@@ -71,6 +71,7 @@
               </thead>
               <tbody id="loadHospitalList"></tbody>
             </table>
+            <div id="divTotalHospitals" ></div>
           </div>
         </div>
       </div>
@@ -94,22 +95,59 @@
 
     function setUpPage() {
       setupTopNav();
+       let urlParams = new URLSearchParams(window.location.search);
+         $('#cmbMonth').val(urlParams.get('mon'));
+         $('#cmbYear').val(urlParams.get('year'));
+      //loadManagers();
+
+      getHospitalListByEmp();
+      getEmpDetails();
+
+    }
+    function getEmpDetails() {
       let urlParams = new URLSearchParams(window.location.search);
-      $('#hospName').text(camelCaseText(urlParams.get('name')));
-      $('#cmbMonth').val(urlParams.get('mon'));
-      $('#cmbYear').val(urlParams.get('year'));
-      loadManagers();
-     
+      $('.loader-wrapper').removeClass('none');
+      let param = {
+        method: 'getEmpDetails',
+        empId: parseInt(urlParams.get('empId'))
+      };
+
+      axios
+        .post("/api", param)
+        .then((response) => {
+          let empData = response.data[0],
+            showHtml = [];
+            console.log(empData)
+          // // <td>${camelCaseText(currVal.hospitalName)}</td>
+          showHtml.push(`
+            <div>
+              <div class="header">
+                <strong> Name: </strong> <span>${camelCaseText(empData.firstName)} </span> 
+              </div>
+              <ul class="content">
+                <li><strong> Designation: </strong> <span>${empData.Designation}</span>  </li>
+                <li><strong> Emp Number: </strong> <span>${empData.EmpNumber}</span>  </li>
+                <li><strong> Mobile: </strong> <span>${empData.MobileNumber}</span></li>
+                <li><strong> Email: </strong> <span>${empData.Email.toLowerCase()}</span> </li>
+              </ul>
+            </div>
+
+          `)
+          $('#dvEmpDetails').html(showHtml.join(''));
+          $('#hospName').html(`List of Hospitals managed by ${camelCaseText(empData.firstName)}`);
+          
+
+        });
     }
 
-
-    function getHospitalList() {
-
+    function getHospitalListByEmp() {
+      let urlParams = new URLSearchParams(window.location.search);
+     // $('#hospName').text(camelCaseText(urlParams.get('name')));
       $('.loader-wrapper').removeClass('none');
       let param = {
         parentId: 1,
-        method: 'getHospitalList',
-        stateName: $('#hospName').text(),
+        method: 'getHospitalListByEmp',
+        empId: parseInt(urlParams.get('empId')),
         mon: $('#cmbMonth').val(),
         year: $('#cmbYear').val()
       };
@@ -117,7 +155,7 @@
       axios
         .post("/api", param)
         .then((response) => {
-          let hospitalList = response.data[0],
+          let hospitalList = response.data,
             showHtml = [],
             mon = $('#cmbMonth').val(),
             year = $('#cmbYear').val();
@@ -125,21 +163,23 @@
           // // <td>${camelCaseText(currVal.hospitalName)}</td>
           hospitalList.forEach((item) => {
             showHtml.push(` <tr>
-                          <td>${item.hospitalName}</td>
-                          <td>${camelCaseText(item.EmpName)}</td>
+                          <td>${camelCaseText(item.hospitalName)}</td>
                           <td>${item.regionName}</td>
                           <td>${item.totalActual}</td>
                           <td>${item.TotalPotential}</td>
-                          <td>${parseInt(item.TotalPotential) <= parseInt(item.totalActual) ? `Green` : `red`} </td>
-                          <td><a href="/hospital-detail?hid=${item.hospitalId}&mon=${mon}&year=${year}&name=${$('#hospName').text()}" class="h-detail"><span>View in Detail</span> <img src="img/file.png" alt="view detail" /> </a></td>
+                          <td>${parseInt(item.TotalPotential) <= parseInt(item.totalActual) ? `<div class="led-box"><div class="led-green"></div></div>` : `<div class="led-box"><div class="led-red"></div></div>`} </td>
+                          <td><a href="/hospital-detail?hid=${item.hospitalId}&empId=${parseInt(urlParams.get('empId'))}&mon=${mon}&year=${year}&name=${camelCaseText(item.hospitalName)}" class="add-potential"><span>Business Tracker</span> </a></td>
                         </tr>   `);
           });
           $('#loadHospitalList').html(showHtml.join(''));
           $('.loader-wrapper').addClass('none');
+          $('#divTotalHospitals').html(`Total Hospitals: ${hospitalList.length}`);
+
+          
         });
     }
     setUpPage();
-    getHospitalList();
+
   </script>
 
 </body>

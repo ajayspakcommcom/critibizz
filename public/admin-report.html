@@ -1,0 +1,262 @@
+<html class="openNav">
+
+<head>
+  <title>Criti Bizz : Admin Report</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="primary-nav" id="loadAdminHeader"></div>
+
+  <div class="new-wrapper">
+    <div id="main">
+      <div id="topnav"></div>
+      <div id="main-contents">
+        <h1 class="m-b-10"><span id="hospName"></span> </h1>
+        <div id="dvEmpDetails"></div>
+        <div class="container">
+          <div class="custom-table custom-table-with-border">
+            <div class="zone-profile">
+            </div>
+            <form>
+
+              <div class="hospital-list-filter">
+
+                <div class="form-group">
+                  <select class="form-control" id="cmbMonth">
+                    <option value="1">Jan</option>
+                    <option value="2">Feb</option>
+                    <option value="3">Mar</option>
+                    <option value="4">Apr</option>
+                    <option value="5">May</option>
+                    <option value="6">Jun</option>
+                    <option value="7">Jul</option>
+                    <option value="8">Aug</option>
+                    <option value="9">Sep</option>
+                    <option value="10">Oct</option>
+                    <option value="11">Nov</option>
+                    <option value="12">Dec</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <select class="form-control" id="cmbYear">
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <select class="form-control" id="cmbHosp">
+                    <option value="JJ">JJ Hospital</option>
+                    <option value="KK">KK</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <select class="form-control" id="cmbRegion">
+                    <option value="JJ">Rajasthan</option>
+                    <option value="KK">Maharashtra</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <select class="form-control" id="cmbActual" placeholder="Actual">
+                    <option value="1000">1000</option>
+                    <option value="2000">2000</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <select class="form-control" id="cmbPotential" placeholder="Potential">
+                    <option value="1000">1000</option>
+                    <option value="2000">2000</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <select class="form-control" id="cmbKam" placeholder="Kam">
+                    <option value="Kam1">Kam1</option>
+                    <option value="Kam2">Kam2</option>
+                  </select>
+                </div>
+
+                <div class="form">
+                  <button type="button" onclick="getHospitalListByEmp();" class="btn">Go</button>
+                </div>
+
+              </div>
+
+            </form>
+            <table class="table table-bordered table-striped grey-box">
+              <thead>
+                <tr>
+                  <th>Hospital Name</th>
+                  <th>Region</th>
+                  <th>Actual Units</th>
+                  <th>Potential Units</th>
+                  <th>Kam</th>
+                </tr>
+              </thead>
+              <tbody id="loadHospitalList">
+                <tr>
+                  <td>JJJ Hospital</td>
+                  <td>Maharashtra</td>
+                  <td>1000</td>
+                  <td>500</td>
+                  <td>Manish Gupta</td>
+                </tr>
+                <tr>
+                  <td>JJJ Hospital</td>
+                  <td>Maharashtra</td>
+                  <td>1000</td>
+                  <td>500</td>
+                  <td>Kam</td>
+                </tr>
+                <tr>
+                  <td>JJJ Hospital</td>
+                  <td>Maharashtra</td>
+                  <td>1000</td>
+                  <td>500</td>
+                  <td>Kam</td>
+                </tr>
+                <tr>
+                  <td>JJJ Hospital</td>
+                  <td>Maharashtra</td>
+                  <td>1000</td>
+                  <td>500</td>
+                  <td>Kam</td>
+                </tr>
+                <tr>
+                  <td>JJJ Hospital</td>
+                  <td>Maharashtra</td>
+                  <td>1000</td>
+                  <td>500</td>
+                  <td>Kam</td>
+                </tr>
+                <tr>
+                  <td>JJJ Hospital</td>
+                  <td>Maharashtra</td>
+                  <td>1000</td>
+                  <td>500</td>
+                  <td>Kam</td>
+                </tr>
+              </tbody>
+            </table>
+            <div id="divTotalHospitals" ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loader-wrapper none">
+    <div class="loader"></div>
+  </div>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+  <script src="js/app.js"></script>
+
+
+  <script>
+
+    function setUpPage() {
+      setupTopNav();
+       let urlParams = new URLSearchParams(window.location.search);
+         $('#cmbMonth').val(urlParams.get('mon'));
+         $('#cmbYear').val(urlParams.get('year'));
+      //loadManagers();
+
+      getHospitalListByEmp();
+      getEmpDetails();
+
+    }
+    function getEmpDetails() {
+      let urlParams = new URLSearchParams(window.location.search);
+      $('.loader-wrapper').removeClass('none');
+      let param = {
+        method: 'getEmpDetails',
+        empId: parseInt(urlParams.get('empId'))
+      };
+
+      axios
+        .post("/api", param)
+        .then((response) => {
+          let empData = response.data[0],
+            showHtml = [];
+            console.log(empData)
+          // // <td>${camelCaseText(currVal.hospitalName)}</td>
+          showHtml.push(`
+            <div>
+              <div class="header">
+                <strong> Name: </strong> <span>${camelCaseText(empData.firstName)} </span> 
+              </div>
+              <ul class="content">
+                <li><strong> Designation: </strong> <span>${camelCaseText(empData.firstName)}</span>  </li>
+                <li><strong> Emp Number: </strong> <span>${empData.EmpNumber}</span>  </li>
+                <li><strong> Mobile: </strong> <span>${empData.MobileNumber}</span></li>
+                <li><strong> Email: </strong> <span>${empData.Email.toLowerCase()}</span> </li>
+              </ul>
+            </div>
+
+          `)
+          $('#dvEmpDetails').html(showHtml.join(''));
+          $('#hospName').html(`List of Hospitals managed by ${camelCaseText(empData.firstName)}`);
+          
+
+        });
+    }
+
+    function getHospitalListByEmp() {
+      let urlParams = new URLSearchParams(window.location.search);
+     // $('#hospName').text(camelCaseText(urlParams.get('name')));
+      $('.loader-wrapper').removeClass('none');
+      let param = {
+        parentId: 1,
+        method: 'getHospitalListByEmp',
+        empId: parseInt(urlParams.get('empId')),
+        mon: $('#cmbMonth').val(),
+        year: $('#cmbYear').val()
+      };
+
+      axios
+        .post("/api", param)
+        .then((response) => {
+          let hospitalList = response.data,
+            showHtml = [],
+            mon = $('#cmbMonth').val(),
+            year = $('#cmbYear').val();
+
+          //<td>${camelCaseText(currVal.hospitalName)}</td>
+          hospitalList.forEach((item) => {
+            showHtml.push(` <tr>
+                          <td>${camelCaseText(item.hospitalName)}</td>
+                          <td>${item.regionName}</td>
+                          <td>${item.totalActual}</td>
+                          <td>${item.TotalPotential}</td>
+                          <td>${parseInt(item.TotalPotential) <= parseInt(item.totalActual) ? `Green` : `red`} </td>
+                          <td><a href="/hospital-detail?hid=${item.hospitalId}&empId=${parseInt(urlParams.get('empId'))}&mon=${mon}&year=${year}&name=${camelCaseText(item.hospitalName)}" class="add-potential"><span>Business Tracker</span> </a></td>
+                        </tr>   `);
+          });
+          //$('#loadHospitalList').html(showHtml.join('')); //
+          $('.loader-wrapper').addClass('none');
+          $('#divTotalHospitals').html(`Total Hospitals: ${hospitalList.length}`);
+
+          
+        });
+    }
+    setUpPage();
+
+  </script>
+
+</body>
+
+</html>

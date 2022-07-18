@@ -23,6 +23,9 @@
                             <div class="zone-profile">
                             </div>
                         </div>
+
+                        <div id="dvNotification" class="addthank"></div>
+
                         <div class="hospital-grid-container addpotential" id="myhospitalMedDetails">
                         </div>
                         <div class="detail-footer addpotential">
@@ -35,18 +38,18 @@
                             </div>
 
                         </div>
-                        <div class="potential-divider"></div>
+                        <!-- <div class="potential-divider"></div> -->
                         <input type="text" id="txthids" />
-                        <table class="addPotentialTable">
+                        <!-- <table class="addPotentialTable">
                             <thead>
                                 <tr>
+                                    <th>Employee Name</th>
                                     <th>Hospital Name</th>
                                     <th>Region</th>
-                                    <th>Employee Name</th>
                                 </tr>
                             </thead>
                             <tbody id="loadHospitalList"></tbody>
-                        </table>
+                        </table> -->
                     </div>
             </div>
             </form>
@@ -77,8 +80,12 @@
            // console.log('lets save all the details');
             let userData = JSON.parse(localStorage.getItem("userData"))
             empId = parseInt(userData.empId),
-                flag = true;
+            flag = true,
+            hospId = urlParams = new URLSearchParams(window.location.search).get('hospId');
             // check if any item is missing
+
+            //console.log('Hosp', hospId);
+
             $('#myhospitalMedDetails input:text').each(function () {
                 if (flag) {
                     let val = $(this).val();
@@ -102,7 +109,7 @@
                         medID: medId,
                         medVal: val,
                         empId: empId,
-                        hospitalId: ($('#txthids').val())
+                        hospitalId: hospId.toString()
                     };
                     axios
                         .post("/api", param)
@@ -112,7 +119,16 @@
                     //console.log(param);
                 });
                 setTimeout(
-                    ($('.loader-wrapper').addClass('none'),  (document.location.href = '/thankyou'))
+                    //($('.loader-wrapper').addClass('none'),  (document.location.href = '/thankyou'))
+                    function() {
+                        $('#dvNotification').html(`
+                        <div> Thanks for entering the details <br> <a href='/potentiallist'>Click here for go back to Hospital List</a></div>
+                    `);
+
+                    $('.loader-wrapper').addClass('none');
+                    }
+                    
+                    
                 , 5000);
                 //
             }
@@ -170,8 +186,9 @@
                                 <td> <img src="img/meds/${rec.imageURL}" alt="${rec.name}" height="250" class="img-responsive" /></td>
                                 <!-- <td>${rec.medicineName}</td>-->
                                 <td>
-                                    <p>${rec.descp}</p>
-                                    <p>${rec.objective}</p>
+                                    <!--<p>${rec.descp}</p>
+                                    <p>${rec.objective}</p>-->
+                                    <h3>Add Potential</h3>
                                     <input type="text" maxlength="5" class="h-detail-input" id="txtmed-${rec.medID}" placeHolder="Add Potentials" />
                                 </td>
                               </tr>
@@ -229,9 +246,9 @@
                     hospitalList.forEach((item) => {
                         hids.push(item.hospitalId);
                         showHtml.push(` <tr>
+                         <td>${camelCaseText(item.EmpName)}</td>
                           <td>${camelCaseText(item.hospitalName)}</td>
                           <td>${item.regionName}</td>
-                          <td>${camelCaseText(item.EmpName)}</td>
                         </tr>   `);
                     });
                     $('#loadHospitalList').html(showHtml.join(''));
@@ -243,7 +260,7 @@
             setupTopNav();
             loadManagers();
             getMedicineList();
-            getMyChildHostpitalList()
+           // getMyChildHostpitalList()
         }
 
         setUpPage();

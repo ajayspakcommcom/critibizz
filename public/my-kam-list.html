@@ -1,0 +1,183 @@
+<html class="openNav">
+
+<head>
+    <title>Criti Bizz : My Kam List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+    <script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div class="primary-nav" id="loadAdminHeader"></div>
+
+    <div class="new-wrapper">
+        <div id="main">
+            <div id="topnav"></div>
+            <div id="main-contents">
+                <h1 class="m-b-10"><span id="hospName">My Team</span></h1>
+                <form>
+                    <div class="container">
+                        <div class="custom-table form">
+                            <div class="zone-profile">
+                            </div>
+                        </div>
+                        <!-- <div class="potential-divider"></div> -->
+                        <input type="text" id="txthids" />
+                        <div class="hospi-detail-btn-wrapper">
+                            <div class="form text-right">
+                                <button type="button" class="btn addActualBtn" onclick="showMyHospitalList()">List My Hospitals
+                                </button>
+                            </div>
+                        </div>
+                        <br>
+                        <table class="addPotentialTable">
+                            <thead>
+                                <tr>
+                                    <th>Emp Code</th>
+                                    <th>Name</th>
+                                    <th>Designatin</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="loadKamList"></tbody>
+                        </table>
+                    </div>
+            </div>
+            </form>
+
+        </div>
+    </div>
+    </div>
+
+    <div class="loader-wrapper none">
+        <div class="loader"></div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+
+
+    <script src="js/app.js"></script>
+
+    <script>
+
+        function showMyHospitalList(){
+            //window.location.href
+            let urlParams = new URLSearchParams(window.location.search),
+                mon = urlParams.get('mon') || 1,
+                year = urlParams.get('year') || 2022,
+                userData = JSON.parse(localStorage.getItem("userData"));
+                //console.log(`hospital-list?empId=${userData.empId}&mon=${mon}&year=${year}`)
+            window.location.href= `hospital-list?empId=${userData.empId}&mon=${mon}&year=${year}`;
+
+        }
+
+        function getMyKamlist() {
+            let userData = JSON.parse(localStorage.getItem("userData")),
+                urlParams = new URLSearchParams(window.location.search)
+            hospitalBtn = $('.hospi-detail-btn-wrapper');
+            hospitalBtn.hide();
+            $('.loader-wrapper').removeClass('none');
+            let param = {
+                method: 'getMyKamlist',
+                empId: urlParams.get('rbmId') || parseInt(userData.empId)
+            };
+            var totalPotential = 0,
+                totalActual = 0;
+
+            axios
+                .post("/api", param)
+                .then((response) => {
+                    let urlParams = new URLSearchParams(window.location.search),
+                        kamLists = response.data[0],
+                        myHospitalCount = response.data[1][0].HospitalCount;
+
+                    if (myHospitalCount > 0 && userData.post.toLowerCase() !== 'zbm') {
+                        // show my button
+                        hospitalBtn.show();
+                        hospitalBtn.find('button').text(`Show my ${myHospitalCount} hospitals`)
+                    }
+                    let showHtml = [],
+                        mon = urlParams.get('mon') || 1,
+                        year = urlParams.get('year') || 2022
+                    kamLists.forEach(rec => {
+                        let link = '';
+                        if (rec.Designation.toLowerCase() === 'rbm') {
+                            link = `<a class="add-potential" href="${window.location.href}&rbmId=${rec.EmpID}">List My KAMs</a>`;
+                        } else {
+                            link = `<a class="add-potential" href="hospital-list?empId=${rec.EmpID}&mon=${mon}&year=${year}">List Hospitals</a>`;
+                        }
+                        showHtml.push(`<tr>
+                                    <td>${rec.EmpNumber}</td>
+                                    <td>${rec.firstName}</td>
+                                    <td>${rec.Designation}</td>
+                                    <td>${rec.Email}</td>
+                                    <td>${rec.MobileNumber}</td>
+                                    <td>${link}</td>
+                                </tr>`)
+                    });
+                    // console.log('this is getting called :1')
+                    $('#loadKamList').html(showHtml.join(''));
+                    $('.loader-wrapper').addClass('none');
+                });
+        }
+
+
+        function getMyChildfasdfasdfasHostpitalList() {
+            // console.log('get my child hospital List');
+            let userData = JSON.parse(localStorage.getItem("userData")),
+                urlParams = new URLSearchParams(window.location.search);
+
+            $('.loader-wrapper').removeClass('none');
+            let param = {
+                empId: parseInt(userData.empId),
+                method: 'myChildHospitalList'
+                // rbmId: urlParams.get('rbmId') || null
+            };
+            var totalPotential = 0,
+                totalActual = 0;
+
+            axios
+                .post("/api", param)
+                .then((response) => {
+                    let hospitalList = response.data;
+                    let hids = [];
+                    let showHtml = [];
+                    hospitalList.forEach((item) => {
+                        hids.push(item.hospitalId);
+                        showHtml.push(` <tr>
+                         <td>${camelCaseText(item.EmpName)}</td>
+                          <td>${camelCaseText(item.hospitalName)}</td>
+                          <td>${item.regionName}</td>
+                          <td><a href="/addpotential?hospId=${item.hospitalId}" class="add-potential">Add Potential</a></td>
+                        </tr>   `);
+                    });
+                    $('#loadHospitalList').html(showHtml.join(''));
+                    $('#txthids').val(hids.join(','));
+                });
+        }
+
+        function setUpPage() {
+            setupTopNav();
+            loadManagers();
+            getMyKamlist();
+        }
+
+        setUpPage();
+
+
+
+    </script>
+
+</body>
+
+
+</html>

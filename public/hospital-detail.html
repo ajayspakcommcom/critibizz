@@ -16,14 +16,14 @@
     <div id="main">
       <div id="topnav"></div>
       <div id="main-contents">
-        <h1 class="m-b-10"><span id="hospName"></span>, <span id="detailCityName"></span></h1>
+        <h1 class="m-b-10"><span id="hospName"></span><span id="detailCityName"></span></h1>
         <form>
           <div class="container">
             <div class="custom-table form">
 
               <div class="zone-profile">
               </div>
-
+              <div id="dvNotification" ></div>
               <div class="hospital-detail-filter-disabled">
                 <form>
                   <div class="hospital-detail-filter">
@@ -54,15 +54,17 @@
                           </select>
                         </div>
                         <input type="hidden" id="txtHospitalId" />
+                        <input type="hidden" id="txtEmpId" />
+                        
                       </div>
                       <div class="form">
-                        <button type="button" onclick="getHospitalDetails();" class="btn">Go</button>
+                        <button type="button" onclick="getHospitalDetails();" class="btn gobtn">Go</button>
                       </div>
                     </div>
                 </form>
               </div>
             </div>
-            <div class="hospital-grid-container" id="myhospitalMedDetails">
+            <div class="hospital-grid-container myhospitalMedDetails" id="myhospitalMedDetails">
             </div>
 
             <div class="detail-footer">
@@ -111,13 +113,13 @@
 
   <script>
 
-    function setStateName() {
-      let urlParams = new URLSearchParams(window.location.search);
-      console.log(urlParams.get('name'));
-      $('#detailCityName').text(camelCaseText(urlParams.get('name')));
-    }
+    // function setStateName() {
+    //   let urlParams = new URLSearchParams(window.location.search);
+    //   console.log(urlParams.get('name'));
+    //   $('#detailCityName').text(camelCaseText(urlParams.get('name')));
+    // }
 
-    setStateName();
+    // setStateName();
 
 
     function getFirstDayPreviousMonth() {
@@ -125,10 +127,12 @@
       let dt = new Date(date.getFullYear(), date.getMonth() - 1, 1);
       $('#cmbMonth').val(dt.getMonth() + 1); // our combo box starts with 1
       $('#cmbYear').val(dt.getFullYear());
-      $('#cmbMonth').attr('disabled', 'disabled');
+      //$('#cmbMonth').attr('disabled', 'disabled');
       $('#cmbYear').attr('disabled', 'disabled');
     }
     function addActualFun() {
+      $('.gobtn').attr('disabled', 'disabled');
+      $('.gobtn').addClass('disabled');
       $('.h-detail-label').addClass('hide');
       $('.h-detail-input').removeClass('none');
       $('.saveActualBtn').removeClass('none');
@@ -141,14 +145,7 @@
       });
     }
 
-    function setUpPage() {
-      setupTopNav();
-      let urlParams = new URLSearchParams(window.location.search);
-      $('#txtHospitalId').val(urlParams.get('hid'));
-      $('#cmbMonth').val(urlParams.get('mon'));
-      $('#cmbYear').val(urlParams.get('year'));
-      loadManagers();      
-    }
+   
 
     function getHospitalDetails() {
       $('.loader-wrapper').removeClass('none');
@@ -178,18 +175,24 @@
                           <table class="table table-bordered">
                             <tbody>
                               <tr>
-                                <td><b>Name</b></td>
-                                <td>${rec.medicineName}</td>
-                              </tr>
-                              <tr>
-                                <td><b>Potential</b></td>
-                                <td>${rec.PotentialTarget}</td>
-                              </tr>
-                              <tr>
-                                <td><b>Actual</b></td>
                                 <td>
-                                  <span class="h-detail-label">${rec.TargetAchieved}</span>
-                                  <input type="text" maxlength="4" class="h-detail-input none" id="txtmed-${rec.medID}" />
+                                  <img src="img/meds/${rec.medicineName}.png"  />
+                                </td>
+                                <td>
+                                  <table>
+                                    <tr>
+                                      <td><h3>Potential</></td>
+                                      <td><span>${rec.PotentialTarget}</span></td>
+                                    </tr>
+                                    <tr>
+                                      <td><h3>Actual</></td>
+                                      <td>
+                                        <span class="h-detail-label">${rec.TargetAchieved}</span>
+                                        <input type="text" maxlength="4" class="h-detail-input none" id="txtmed-${rec.medID}" placeholder="Enter your Actuals" />
+                                      </td>
+                                    </tr>
+                                  </table>
+
                                 </td>
                               </tr>
                             </tbody>
@@ -206,6 +209,7 @@
 
     function saveMyDetails() {
       console.log('lets save all the details');
+
       /*
       @medId smallInt,
    @hospitalId smallInt,
@@ -240,7 +244,15 @@
 
       });
      
-      (document.location.href = '/thankyou');
+      //(document.location.href = '/thankyou');
+      addActualFun();
+      $('#dvNotification').html(`
+       <div> Thanks for entering the details <br> <a href='hospital-list?empId=${$('#txtEmpId').val()}&mon=${parseInt($('#cmbMonth').val())}&year=${parseInt($('#cmbYear').val())}'>Click here for go back to Hospital List</a></div>
+      `)
+      //http://localhost:3333/hospital-list?empId=90&mon=6&year=2022
+      $('#myhospitalMedDetails input:text').each(function () {
+        $(this).val('')
+      });
 
     }
 
@@ -272,8 +284,20 @@
       };
     }(jQuery));
 
+
+    function setUpPage() {
+      setupTopNav();
+      let urlParams = new URLSearchParams(window.location.search);
+      $('#txtHospitalId').val(urlParams.get('hid'));
+      $('#txtEmpId').val(urlParams.get('empId'));
+      $('#cmbMonth').val(urlParams.get('mon'));
+      $('#cmbYear').val(urlParams.get('year'));
+     // loadManagers();      
+     getHospitalDetails();
+    }
+
     setUpPage();
-    getHospitalDetails();
+   
 
 
 

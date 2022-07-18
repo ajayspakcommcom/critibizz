@@ -1,6 +1,6 @@
 <html class="openNav">
 <head>
-  <title>criti Bizz: Chart</title>
+  <title>Criti Bizz: Chart</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css" />
@@ -73,12 +73,13 @@
     function drawRegionsMap() {
 
       $('.loader-wrapper').removeClass('none');
-
+      let userData = JSON.parse(localStorage.getItem("userData"));
       let param = {
         parentId: 1,
         method: 'getMychildforOrgChart',
         mon: $('#cmbMonth').val(),
-        year: $('#cmbYear').val()
+        year: $('#cmbYear').val(),
+        empId: parseInt(userData.empId)
       };
       axios
         .post("/api", param)
@@ -88,7 +89,7 @@
 
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'State');
-            data.addColumn('number', 'Total Units');
+            data.addColumn('number', 'Potential Units');
             data.addColumn('number', 'Actual Units');
             //data.addColumn('string', 'Actual Target');
             data1.forEach(rec => { 
@@ -130,7 +131,8 @@
           console.log('selectionIdx', selectionIdx);
           console.log('countryName', stateName);
 
-          window.location.href = `hospital-list?id=${selectionIdx}&name=${stateName}&mon=${month}&year=${year}`;
+         // window.location.href = `hospital-list?id=${selectionIdx}&name=${stateName}&mon=${month}&year=${year}`;
+         window.location.href = `my-kam-list?id=${selectionIdx}&name=${stateName}&mon=${month}&year=${year}`;
         }
       });
 

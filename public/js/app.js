@@ -99,7 +99,8 @@ function isUserLoggedIn() {
         }
     }
     if (userData) {
-        $('#spUserFullName').text('Hello ' + camelCaseText(userData.name));
+       // $('#spUserFullName').text('Hello ' + camelCaseText(userData.name) +'('+ +')');
+        $('#spUserFullName').text(`Hello ${camelCaseText(userData.name)} (${(userData.post)})`);
     }
 }
 
@@ -151,6 +152,7 @@ function goBack() {
     window.history.back();
 }
 
+
 function toggleGoBackLink() {
     const urlPathName = window.location.pathname;
    // console.log(urlPathName.substring(1));
@@ -175,7 +177,7 @@ function toggleGoBackLink() {
 
 setTimeout(() => {
     toggleGoBackLink();
-}, 200);
+}, 500);
 
 function camelCaseText(str) {
     // return txt.substr( 0, 1 ).toString().toUpperCase() + txt.substr( 1 ).toString().toLowerCase();
