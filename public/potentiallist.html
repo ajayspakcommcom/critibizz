@@ -59,6 +59,7 @@
                                     <th>Employee Name</th>
                                     <th>Hospital Name</th>
                                     <th>Region</th>
+                                    <th>Target</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -255,6 +256,7 @@
                          <td>${camelCaseText(item.EmpName)}</td>
                           <td>${camelCaseText(item.hospitalName)}</td>
                           <td>${item.regionName}</td>
+                          <td>${(item.sumTarget)? item.sumTarget : 0}</td>
                           <td><a href="/addpotential?hospId=${item.hospitalId}" class="add-potential">Add Potential</a></td>
                         </tr>   `);
                     });

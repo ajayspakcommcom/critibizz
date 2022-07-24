@@ -1,6 +1,7 @@
 const _POSTLOGINURL = '/chart',
     _POST_5TH_USER_IS_ALLOWED_TO_ENTER_ACTUALS = true,
-    _CUT_OF_DATE_OF_MONTH = 5;
+    _CUT_OF_DATE_OF_MONTH = 5,
+    _ADMINROLE = 'ADMIN';
 
 function validateAdminUserDetails() {
     if ($("#username").val() === "") {
@@ -89,7 +90,10 @@ function setupTopNav() {
 
 function isUserLoggedIn() {
    // console.log('check user is logged in or not')
-    let userData = JSON.parse(localStorage.getItem("userData"));
+   let adminLink = $('#adminReport'),
+        userData = JSON.parse(localStorage.getItem("userData"));
+
+    adminLink.hide();
     const urlPathName = window.location.pathname;
     if ((urlPathName.substring(1) == '') || (urlPathName.substring(1) == 'index')) {
       //  console.log('user is on home page')
@@ -101,7 +105,12 @@ function isUserLoggedIn() {
     if (userData) {
        // $('#spUserFullName').text('Hello ' + camelCaseText(userData.name) +'('+ +')');
         $('#spUserFullName').text(`Hello ${camelCaseText(userData.name)} (${(userData.post)})`);
+        if (userData.post === _ADMINROLE) {
+            adminLink.show();
+        }
     }
+
+
 }
 
 

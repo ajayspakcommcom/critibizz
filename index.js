@@ -8,11 +8,15 @@ const bodyParser = require("body-parser");
 const app = express();
 const sql = require("mssql");
 const { isArray } = require("util");
-const _allowedDesignaiton = ['ZBM', 'RBM'];
+const _allowedDesignaiton = ['ZBM', 'RBM', 'ADMIN'];
+
+const adminRoutes = require('./routes/admin');
 
 app.use(express.static(path.join(__dirname, "public")));
 
 //app.use("/", express.static(__dirname + "/public"));
+
+
 
 const twoDay = 1000 * 60 * 60 * 48;
 console.log(twoDay);
@@ -28,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 app.use(cookieParser());
+app.use(adminRoutes);
 
 const config = {
   server: "N1NWPLSK12SQL-v03.shr.prod.ams1.secureserver.net",
@@ -105,10 +110,10 @@ app.get("/my-kam-list", (req, res) => {
   res.sendFile(`${__dirname}/public/my-kam-list.html`);
 });
 
-app.get("/admin-report", (req, res) => {
-  console.log('Admin Report')
-  res.sendFile(`${__dirname}/public/admin-report.html`);
-});
+// app.get("/admin-report", (req, res) => {
+//   console.log('Admin Report')
+//   res.sendFile(`${__dirname}/public/admin-report.html`);
+// });
 
 
 //my-kam-list
