@@ -1515,10 +1515,10 @@ box-shadow: 1px 1px 5px grey;
 }
 
 .myhospitalMedDetails h3 {
-  font-size: 24px;
-margin-bottom: 24px;
-font-family: 'Regular';
-margin-right: 20px;
+  font-size: 16px;
+  margin-bottom: 24px;
+  font-family: 'Regular';
+  margin-right: 20px;
 }
 
 .myhospitalMedDetails span {
@@ -1918,7 +1918,7 @@ margin-right: 20px;
   Medium Screen Typography - Scale: 1.333 Perfect Fourth (thanks http://type-scale.com/) 
 */
 
-#cmbMonth, #cmbYear, #cmbHosp, #cmbRegion, #cmbActual, #cmbKam, #cmbPotential {
+#cmbMonth, #cmbYear, #cmbHosp, #cmbRegion, #cmbActual, #cmbKam, #cmbPotential, #cmbEmpList, #cmbBrandList {
   display: block;
   width: 100px;
   height: 34px;
@@ -1938,6 +1938,10 @@ margin-right: 20px;
   transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+}
+
+#cmbEmpList {
+  width: auto;
 }
 
 .hospital-list-filter {
@@ -2044,7 +2048,7 @@ div#lblmsg {
   font-family: 'Regular';
 }
 
-.addpotential-table [type="text"], #txthids {
+.addpotential-table [type="text"], #txthids, #txtBed, #textIcuBed {
   display: block;
     height: 34px;
     padding: 6px 12px;
@@ -2302,6 +2306,18 @@ div#lblmsg {
 }
 
 
+.admin-report-header {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#exporttoexcell img {
+  width: 50px;
+  height: auto;
+}
+
 
 /* modal */
 
@@ -2323,6 +2339,61 @@ div#lblmsg {
 
 }
 
+.add-bed {
+  margin-bottom: 20px;
+}
+
+.addnobed {
+  width: 300px;
+  margin: auto;
+  grid-template-columns: auto;
+}
+
+.addnobed table, .addnobed input {
+  width: 100%;
+}
+
+.addnobed h3 {
+  margin-bottom: 15px;
+  margin-top: 20px;
+  font-size: 17px;
+} 
+
+.detail-footer.addnobed {
+  justify-content: center;
+  color:#fff;
+}
+
+.detail-footer.addnobed button {
+  color: #fff !important;
+  margin-top: 20px;
+  height: 40px;
+}
+
+.addnobed > div {
+  padding: 0px 30px;
+}
+
+.block-btn {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.m-b-0 {
+  margin-bottom: 0 !important;
+}
+
+
+.potential-list-header {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+}
+
+.potential-list-header strong {
+  font-size: 20px;
+  color: #0075c1;
+}
 
 /* Large Screen Typography  - Scale: 1.414 Augmented Fourth (thanks http://type-scale.com/)  */
 

@@ -8,6 +8,28 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/common.js"></script>
 
+    <style>
+        .table-striped > thead > tr > th:nth-child(1),
+        .table-striped > thead > tr > th:nth-child(2),
+        .table-striped > thead > tr > th:nth-child(3),
+        .table-striped > thead > tr > th:nth-child(4),
+        .table-striped > thead > tr > th:nth-child(5),
+        .table-striped > thead > tr > th:nth-child(6),
+        .table-striped > thead > tr > th:nth-child(7),
+        .table-striped > thead > tr > th:nth-child(8),
+        .table-striped > thead > tr > th:nth-child(9),
+        .table-striped > thead > tr > th:nth-child(10),
+        .table-striped > thead > tr > th:nth-child(11),
+        .table-striped > thead > tr > th:nth-child(12)
+         {
+            width: 100px;
+        }
+
+        #cmbMonth, #cmbYear, #cmbHosp, #cmbRegion, #cmbActual, #cmbKam, #cmbPotential, #cmbEmpList, #cmbBrandList {
+            width: 140px;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -25,67 +47,78 @@
                         </div>
                         <form>
 
-                            <div class="hospital-list-filter">
+                            <div class="admin-report-header">   
+                                <div class="hospital-list-filter">
 
-                                <div class="form-group">
-                                    <select class="form-control" id="cmbMonth">
-                                        <option value="1">Jan</option>
-                                        <option value="2">Feb</option>
-                                        <option value="3">Mar</option>
-                                        <option value="4">Apr</option>
-                                        <option value="5">May</option>
-                                        <option value="6">Jun</option>
-                                        <option value="7">Jul</option>
-                                        <option value="8">Aug</option>
-                                        <option value="9">Sep</option>
-                                        <option value="10">Oct</option>
-                                        <option value="11">Nov</option>
-                                        <option value="12">Dec</option>
-                                    </select>
+                                    <div class="form-group">
+                                        <select class="form-control" id="cmbMonth">
+                                            <option value="1">Jan</option>
+                                            <option value="2">Feb</option>
+                                            <option value="3">Mar</option>
+                                            <option value="4">Apr</option>
+                                            <option value="5">May</option>
+                                            <option value="6">Jun</option>
+                                            <option value="7">Jul</option>
+                                            <option value="8">Aug</option>
+                                            <option value="9">Sep</option>
+                                            <option value="10">Oct</option>
+                                            <option value="11">Nov</option>
+                                            <option value="12">Dec</option>
+                                        </select>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <select class="form-control" id="cmbYear">
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                        </select>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <select class="form-control" id="cmbHosp">
+                                            <option value="">Select Hospital</option>
+                                        </select>
+                                    </div>
+    
+                                    <div class="form-group" style="display: none;">
+                                        <select class="form-control" id="cmbRegion">
+                                            <option value="">Select Region</option>
+                                        </select>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <select class="form-control" id="cmbKam">
+                                            <option value="">Select Kam</option>
+                                        </select>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <select class="form-control" id="cmbBrandList">
+                                            <option value="">Select Brand</option>
+                                        </select>
+                                    </div>
+    
+    
+                                    <div class="form">
+                                        <button type="button" onclick="getAdminReport();" class="btn">Go</button>
+                                    </div>
+    
                                 </div>
-
-                                <div class="form-group">
-                                    <select class="form-control" id="cmbYear">
-                                        <option value="2022">2022</option>
-                                        <option value="2023">2023</option>
-                                    </select>
+                                <div>   
+                                    <a href="javascript:void(0);" id="exporttoexcell" onclick="downLoadReport()">
+                                        <img src="../img/excel.png" alt="export to excel">   
+                                    </a>
                                 </div>
-
-                                <div class="form-group">
-                                    <select class="form-control" id="cmbHosp">
-                                        <option value="">---- Select ----</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <select class="form-control" id="cmbRegion">
-                                        <option value="">---- Select ----</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <select class="form-control" id="cmbKam">
-                                        <option value="">---- Select ----</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <select class="form-control" id="cmbBrandList">
-                                        <option value="">---- Select ----</option>
-                                    </select>
-                                </div>
-
-
-                                <div class="form">
-                                    <button type="button" onclick="getAdminReport();" class="btn">Go</button>
-                                </div>
-
                             </div>
+                        
+                            
 
                         </form>
-                        <table class="table table-bordered table-striped grey-box">
+                        <table class="table table-bordered table-striped grey-box" id="adminReport">
                             <thead>
                                 <tr>
+                                    <th>Employee Code</th>
+                                    <th>Kam</th>
                                     <th>Hospital Name</th>
                                     <th>Thymogam</th>
                                     <th>Amphonex</th>
@@ -95,7 +128,6 @@
                                     <th>PolyMxB</th>
                                     <th>Plasmanate</th>
                                     <th>Total Actual</th>
-                                    <th>Kam</th>
                                 </tr>
                             </thead>
                             <tbody id="loadHospitalList">
@@ -119,8 +151,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
+    <script src="https://www.jqueryscript.net/demo/Export-Html-Table-To-Excel-Spreadsheet-using-jQuery-table2excel/src/jquery.table2excel.js"></script>
+    
     <script src="js/app.js"></script>
-
 
     <script>
 
@@ -133,8 +166,6 @@
             loadMonthYear();
             getReportFilters();
             getAdminReport()
-
-
         }
         function getReportFilters() {
             let params = {
@@ -153,6 +184,9 @@
                         showHtml = [],
                         mon = $('#cmbMonth').val(),
                         year = $('#cmbYear').val();
+
+                        console.log(hospitalList);
+                        
                     // LIST HOSPITALS
                     loadComboBox(hospitalList, 'cmbHosp', 'hospitalId', 'hospitalName', 'regionName');
                     // LIST STATE
@@ -165,7 +199,6 @@
 
         }
         
-
         function getAdminReport() {
             let urlParams = new URLSearchParams(window.location.search);
             $('.loader-wrapper').removeClass('none');
@@ -175,7 +208,8 @@
                 mon: $('#cmbMonth').val(),
                 year: $('#cmbYear').val(),
                 hospitalId: $('#cmbHosp').val(),
-                medId: $('#cmbBrandList').val()
+                medId: $('#cmbBrandList').val(),
+                empId: $('#cmbKam').val(),
             };
 
             axios
@@ -191,6 +225,8 @@
                     list.forEach((item) => {
                         let rowTotal = (parseInt(item.Thymogam) + parseInt(item.Amphonex)+parseInt(item.AGCuffill) + parseInt(item.UTryp)+ parseInt(item.Octaplex)+parseInt(item.PolyMxB) + parseInt(item.Plasmanate))
                         showHtml.push(` <tr>
+                          <td>${(item.EmpNumber)}</td>
+                          <td>${camelCaseText(item.firstName)}</td>
                           <td>${camelCaseText(item.hospitalName)}</td>
                           <td>${(item.Thymogam)}</td>
                           <td>${(item.Amphonex)}</td>
@@ -200,9 +236,6 @@
                           <td>${(item.PolyMxB)}</td>
                           <td>${(item.Plasmanate)}</td>
                           <td>${rowTotal}</td>
-                          <td>${camelCaseText(item.firstName)}</td>
-                          
-                        
                         </tr>   `);
                     });
                     $('#loadHospitalList').html(showHtml.join('')); //
@@ -210,6 +243,17 @@
 
                 });
         }
+
+      function downLoadReport() {
+          debugger;
+		$("#adminReport").table2excel({
+            exclude:".noExl",
+            name:"Worksheet Name",
+            filename:"SomeFile",
+            fileext:".xls"
+        });
+	}
+
         setUpPage();
 
     </script>

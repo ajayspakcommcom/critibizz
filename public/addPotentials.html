@@ -26,6 +26,8 @@
 
                         <div id="dvNotification" class="addthank"></div>
 
+                        
+
                         <div class="hospital-grid-container addpotential" id="myhospitalMedDetails">
                         </div>
                         <div class="detail-footer addpotential">
@@ -73,8 +75,6 @@
     <script src="js/app.js"></script>
 
     <script>
-
-
 
         function savePotentials() {
            // console.log('lets save all the details');
@@ -188,7 +188,7 @@
                                 <td>
                                     <!--<p>${rec.descp}</p>
                                     <p>${rec.objective}</p>-->
-                                    <h3>Add Potential</h3>
+                                    <h3>Add Monthly Unit Consumption</h3>
                                     <input type="text" maxlength="5" class="h-detail-input" id="txtmed-${rec.medID}" placeHolder="Add Potentials" />
                                 </td>
                               </tr>
@@ -209,6 +209,7 @@
                         </div>`)
                     });
                    // console.log('this is getting called :1')
+                   //showHtml += `<div class="demo">First</div>`;
                     $('#myhospitalMedDetails').html(showHtml.join(''));
                     $('.loader-wrapper').addClass('none');
                     //console.log('this is getting called :2')

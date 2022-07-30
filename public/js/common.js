@@ -1,6 +1,28 @@
 function loadComboBox(data, dropdown, displayValue, displayText, optionTextAlongWithDisplayText) {
     $('#' + dropdown).empty();
-    $('#' + dropdown).append($('<option></option>').val('').html('---- Select ----'));
+    //$('#' + dropdown).append($('<option></option>').val('').html('---- Select ----'));
+
+    let selectHeader = '';
+
+    switch(dropdown) {
+        case 'cmbHosp':
+            selectHeader = 'Select Hospital';
+        break;
+        case 'cmbRegion':
+            selectHeader = 'Select State';
+        break;
+        case 'cmbBrandList':
+            selectHeader = 'Select Brand';
+        break;
+        case 'cmbKam':
+            selectHeader = 'Select Kam';
+        break;
+        default:
+            selectHeader = '----Select----';
+            break;
+    }
+
+    $('#' + dropdown).append($('<option></option>').val('').html(`${selectHeader}`));
     $.each(data, function (index, item) {
         let text = (item[displayText]) ? item[displayText] : '',
             optinalText = ((optionTextAlongWithDisplayText) ? item[optionTextAlongWithDisplayText] : ''),

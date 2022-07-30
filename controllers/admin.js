@@ -58,6 +58,7 @@ function _getAdminReportData(objParam) {
           .input("year", sql.SmallInt, objParam.year)
           .input("hospitalId", sql.Int, ((objParam.hospitalId) || null))
           .input("medId", sql.Int, ((objParam.medId) || null))
+          .input("empId", sql.Int, ((objParam.empId) || null))
           .execute("USP_GET_ADMIN_REPORT_CRITIBIZZ_v1")
           .then(function (resp) {
             resolve(resp);

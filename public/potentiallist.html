@@ -37,17 +37,21 @@
                         <div class="potential-divider"></div> -->
                         <form>
 
-                            <div class="hospital-list-filter">
-
-                                <div class="form-group">
-                                    <select class="form-control" id="cmbEmpList">
-                                    </select>
+                            <div class="potential-list-header">
+                                <div class="hospital-list-filter">
+                                    <div class="form-group">
+                                        <select class="form-control" id="cmbEmpList">
+                                        </select>
+                                    </div>
+                                    <div class="form">
+                                        <button type="button" onclick="filterTable();" class="btn">Go</button>
+                                    </div>
                                 </div>
-                                <div class="form">
-                                    <button type="button" onclick="filterTable();" class="btn">Go</button>
+                                <div>
+                                    <strong>Add Monthly Units Consumption</strong>
                                 </div>
-
                             </div>
+                            
 
 
 
@@ -58,8 +62,18 @@
                                 <tr>
                                     <th>Employee Name</th>
                                     <th>Hospital Name</th>
+                                    <th>Employee Number</th>
                                     <th>Region</th>
-                                    <th>Target</th>
+                                    <th>Thymogam</th>
+                                    <th>Amphonex</th>
+                                    <th>AGCuffill</th>
+                                    <th>UTryp</th>
+                                    <th>Octaplex</th>
+                                    <th>PolyMxB</th>
+                                    <th>Plasmanate</th>
+                                    <th>Bed No.</th>
+                                    <th>Icu Bed No.</th>
+                                    <th>Total Potential</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -243,6 +257,7 @@
                 .post("/api", param)
                 .then((response) => {
                     let hospitalList = response.data;
+                    console.log('Ram', response.data);
                     let hids = [];
                     let showHtml = [];
                     let myTeamMemberList = [];
@@ -253,11 +268,25 @@
                         }
                         hids.push(item.hospitalId);
                         showHtml.push(` <tr>
+                            
                          <td>${camelCaseText(item.EmpName)}</td>
-                          <td>${camelCaseText(item.hospitalName)}</td>
+                         <td>${camelCaseText(item.hospitalName)}</td>
+                         <td>${item.EmpNumber}</td>
                           <td>${item.regionName}</td>
+                          <td>${item.Thymogam}</td>
+                          <td>${item.Amphonex}</td>
+                          <td>${item.AGCuffill}</td>
+                          <td>${item.UTryp}</td>
+                          <td>${item.Octaplex}</td>
+                          <td>${item.PolyMxB}</td>
+                          <td>${item.Plasmanate}</td>
+                          <td>${item.bedNo}</td>
+                          <td>${item.ICUbedNo}</td>
                           <td>${(item.sumTarget)? item.sumTarget : 0}</td>
-                          <td><a href="/addpotential?hospId=${item.hospitalId}" class="add-potential">Add Potential</a></td>
+                          <td>
+                            <a href="/addpotential?hospId=${item.hospitalId}" class="add-potential block-btn">Add Potential</a>
+                            <a href="/addNoBed?hospId=${item.hospitalId}" class="add-potential block-btn m-b-0">Add No. Bed</a>
+                        </td>
                         </tr>   `);
                     });
                     console.log(myTeamMemberList.join(','))
