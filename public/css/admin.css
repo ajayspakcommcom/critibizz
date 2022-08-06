@@ -2395,6 +2395,53 @@ div#lblmsg {
   color: #0075c1;
 }
 
+.chart-form1 {
+  position: static !important;
+  margin-bottom: 15px;
+  margin-top: 20px;
+}
+
+.hospital-grid-container1 {
+  display: flex;
+  display: -webkit-flex;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.hospital-grid-container1 h2 {
+  font-size: 18px;
+  font-family: 'Bold';
+  text-align: center;
+  color: #0075c1 !important;
+}
+
+.hospital-grid-container1 b {
+  font-size: 16px;
+  display: block;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.hospital-grid-container1 > div:nth-child(odd) {
+  margin-right: 0;
+}
+
+.hospital-grid-container1 > div {
+  padding: 20px 20px; 
+  margin-right: 20px !important;
+  max-width: 211px;
+}
+
+.hospital-grid-container1 > div table {
+  margin-bottom: 0;
+}
+
+.home-table > tbody > tr:first-child > td  {
+  background-color: #0075c1;
+  color:#fff !important;
+  font-weight: 600;
+}
+
 /* Large Screen Typography  - Scale: 1.414 Augmented Fourth (thanks http://type-scale.com/)  */
 
 @media screen and (min-width: 72em) {

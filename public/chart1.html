@@ -22,7 +22,7 @@
       <div>
         <form>
 
-          <div class="chart-form">
+          <div class="chart-form chart-form1">
             <div class="form-group">
               <select class="form-control" id="cmbMonth">
                 <option value="1">Jan</option>
@@ -50,17 +50,13 @@
             <div class="form">
               <button type="button" onclick="drawRegionsMap();" class="btn">Go</button>
             </div>
-
-            <div class="hospital-grid-container myhospitalMedDetails" id="myhospitalMedDetails">
-            </div>
-
           </div>
 
-
+          <div class="hospital-grid-container hospital-grid-container1 myhospitalMedDetails" id="myhospitalMedDetails">
+          </div>
 
         </form>
       </div>
-      <div id="regions_div" style="width: 100%;height: 100vh;"></div>
     </div>
   </div>
 
@@ -89,6 +85,7 @@
           let data1 = response.data[0];
           data = [];
           data1.forEach(s => {
+           
             let rec = data.find(item => {
               return item.stateId === s.StateID
             })
@@ -100,7 +97,8 @@
                 hospitalCount: 1,
                 medicineDetails: [{
                   medicineName: s.medicineName,
-                  count: s.Target
+                  count: s.Target,
+                  potentialCount: s.PotentialTarget
                 }]
               });
             } else {
@@ -117,11 +115,13 @@
               });
               if (medicineDetailRec) {
                 medicineDetailRec.count = (parseFloat(medicineDetailRec.count) + parseFloat(s.Target));
+                medicineDetailRec.potentialCount= (parseFloat(medicineDetailRec.potentialCount) + parseFloat(s.PotentialTarget)); 
               } else {
                 rec.medicineDetails.push(
                   {
                     medicineName: s.medicineName,
-                    count: s.Target
+                    count: s.Target,
+                    potentialCount: s.PotentialTarget
                   }
                 )
               }
@@ -134,39 +134,23 @@
             rec.medicineDetails.forEach(med => {
               medicineDetails.push(` <tr> 
                                   <td>${med.medicineName} </td>
+                                  <td>${med.potentialCount} </td>
                                   <td>${med.count}</td>
                                 </tr>`)
             })
 
             showHtml.push(`<div>
-                          <table class="table table-bordered">
-                            <tbody>
-                              <tr>
-                                <td>
-                                  ${rec.stateName}
-                                </td>
-                                <td>
-                                  <table border="0">
-                                    <tr>
-                                     <td>Total hospitalCount: </td>
-                                      <td><span>${rec.hospitalCount}</span></td>
-                                    </tr>
-                                    <tr>
-                                      <td><h3>Medici1111nes</></td>
-                                      <td>
-                                        <table border="1">
-                                            <tr> 
-                                                <td>Medicine </td>
-                                                <td>Medicine Count</td>
-                                              </tr>
-                                              ${medicineDetails.join('')}  
-                                            </table>                                        
-                                      </td>
-                                    </tr>
-                                  </table>
-                               </td>
+                          <h2>${rec.stateName}</h2>
+                          <b> Total hospitals:${rec.hospitalCount} </b>
+                          <table border="1" class="addPotentialTable home-table">
+                              <tr> 
+                                  <td>Brand </td>
+                                  <td>Potential</td>
+                                  <td>Actual</td>
+                                  
                               </tr>
-                            </tbody>
+                                    ${medicineDetails.join('')}                                     
+                              </tr>
                           </table>
                         </div>`)
           });
@@ -177,7 +161,6 @@
     }
 
     setupTopNav()
-
     loadMonthYear();
     drawRegionsMap();
 
