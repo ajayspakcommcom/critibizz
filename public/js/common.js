@@ -15,7 +15,16 @@ function loadComboBox(data, dropdown, displayValue, displayText, optionTextAlong
             selectHeader = 'Select Brand';
         break;
         case 'cmbKam':
-            selectHeader = 'Select Kam';
+            selectHeader = 'Select KAM';
+        break;
+        case 'cmbRBM':
+            selectHeader = 'Select RBM';
+        break;
+        case 'cmbZBM':
+            selectHeader = 'Select ZBM';
+        break;
+        case 'cmbZone':
+            selectHeader = 'Select Zone';
         break;
         default:
             selectHeader = '----Select----';
@@ -24,16 +33,16 @@ function loadComboBox(data, dropdown, displayValue, displayText, optionTextAlong
 
     $('#' + dropdown).append($('<option></option>').val('').html(`${selectHeader}`));
     $.each(data, function (index, item) {
-        let text = (item[displayText]) ? item[displayText] : '',
+        let text = (item[displayText]) ? camelCaseText(item[displayText]) : '',
             optinalText = ((optionTextAlongWithDisplayText) ? item[optionTextAlongWithDisplayText] : ''),
-            textPlusOptionl = text + ((optinalText.length > 0) ? ' - ' + optinalText : '');
+            textPlusOptionl = text + ((optinalText.length > 0) ? ' - ' + optinalText.toUpperCase() : '');
         // console.log('-------------------------------------------')
         // console.log(text)
         // console.log(optinalText)
         // console.log()
         // console.log('-------------------------------------------')
         $('#' + dropdown).append(
-            $('<option></option>').val(item[displayValue]).html(camelCaseText(textPlusOptionl))
+            $('<option></option>').val(item[displayValue]).html((textPlusOptionl))
         );
     });
 }

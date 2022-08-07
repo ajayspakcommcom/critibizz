@@ -17,7 +17,7 @@ exports.getAdminFilters = (req, res, next) => {
 exports.getAdminReportData = (req, res, next) => {
   console.log('admin controller -->' + req.query.method)
   //return res.status(200).json(_loadFilter(req.body));
-  _getAdminReportData(req.body).then((response) => {
+  _getNewAdminReportData(req.body).then((response) => {
     res.status(200).json(response.recordset);
   });
 }
@@ -60,6 +60,45 @@ function _getAdminReportData(objParam) {
           .input("medId", sql.Int, ((objParam.medId) || null))
           .input("empId", sql.Int, ((objParam.empId) || null))
           .execute("USP_GET_ADMIN_REPORT_CRITIBIZZ_v1")
+          .then(function (resp) {
+            resolve(resp);
+            dbConn.close();
+          })
+          .catch(function (err) {
+            //console.log(err);
+            dbConn.close();
+          });
+      })
+      .catch(function (err) {
+        //console.log(err);
+      });
+  });
+}
+
+
+function _getNewAdminReportData(objParam) {
+  console.log(arguments)
+  console.log('---------------------------')
+  let response;
+  return new Promise((resolve) => {
+    var dbConn = new sql.ConnectionPool(config);
+    dbConn
+      .connect()
+      .then(function () {
+        var request = new sql.Request(dbConn);
+        request
+          //.input("month", sql.SmallInt, objParam.mon)
+          .input("year", sql.SmallInt, objParam.year)
+          .input("secondYear", sql.SmallInt, objParam.year)
+          .input("empId", sql.Int, ((objParam.empId) || null))
+          .input("hospitalId", sql.Int, ((objParam.hospitalId) || null))
+          .input("medId", sql.Int, ((objParam.medId) || null))
+          .input("kamId", sql.Int, ((objParam.kamId) || null))
+          .input("rbmId", sql.Int, ((objParam.rbmId) || null))
+          .input("zbmId", sql.Int, ((objParam.zbmId) || null))
+          .input("zoneId", sql.Int, ((objParam.zoneId) || null))
+          
+          .execute("USP_RBM_REPORT")
           .then(function (resp) {
             resolve(resp);
             dbConn.close();

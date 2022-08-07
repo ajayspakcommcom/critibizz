@@ -93,7 +93,7 @@ function isUserLoggedIn() {
    let adminLink = $('#adminReport'),
         userData = JSON.parse(localStorage.getItem("userData"));
 
-    adminLink.hide();
+    adminLink.show();
     const urlPathName = window.location.pathname;
     if ((urlPathName.substring(1) == '') || (urlPathName.substring(1) == 'index')) {
       //  console.log('user is on home page')
@@ -116,9 +116,11 @@ function isUserLoggedIn() {
 
 
 function logMeOut() {
-    //localStorage.setItem("userData", null);
+    localStorage.setItem("userData", null);
     localStorage.clear();
+    //document.location.href = "/manager/login";
     document.location.href = "/index";
+
 }
 
 
