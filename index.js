@@ -1017,7 +1017,7 @@ function getdataQuery() {
           });
       })
       .catch(function (err) {
-        // console.log(err);
+        // console.log(err); // ajay
       });
   });
 }
