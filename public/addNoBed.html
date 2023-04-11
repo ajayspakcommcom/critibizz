@@ -33,13 +33,15 @@
                                         <tr>
                                             <td>
                                                 <h3>No. of Beds</h3>
-                                                <input type="number" maxlength="5" class="h-detail-input" id="txtBed" placeholder="No. of Beds" />
+                                                <input type="number" maxlength="5" class="h-detail-input" id="txtBed"
+                                                    placeholder="No. of Beds" />
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <h3>No. of ICU Beds</h3>
-                                                <input type="number" maxlength="5" class="h-detail-input" id="textIcuBed" placeholder="No. of ICU Beds" />
+                                                <input type="number" maxlength="5" class="h-detail-input"
+                                                    id="textIcuBed" placeholder="No. of ICU Beds" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -47,7 +49,8 @@
                                 <div class="detail-footer addpotential addnobed">
                                     <div class="hospi-detail-btn-wrapper">
                                         <div class="form text-right">
-                                            <button type="button" class="btn addActualBtn" onclick="saveNoBed()">Save</button>
+                                            <button type="button" class="btn addActualBtn"
+                                                onclick="saveNoBed()">Save</button>
                                         </div>
                                     </div>
                                 </div>
@@ -55,7 +58,7 @@
                             </div>
                         </div>
 
-                        
+
                     </div>
             </div>
             </form>
@@ -79,40 +82,40 @@
     <script>
 
         function saveNoBed() {
-
+            debugger;
             let userData = JSON.parse(localStorage.getItem("userData"))
-                empId = parseInt(userData.empId),
+            empId = parseInt(userData.empId),
                 flag = true,
                 hospId = urlParams = new URLSearchParams(window.location.search).get('hospId');
 
-                $('.loader-wrapper').removeClass('none');
-                
-                let param = {
-                        method: 'saveNoOfBed',
-                        noOfBed: parseInt($('#txtBed').val()),
-                        noOfIcuBed: parseInt($('#textIcuBed').val()),
-                        empId: empId,
-                        hospitalId: parseInt(hospId)
-                    };
+            $('.loader-wrapper').removeClass('none');
 
-                    console.log(param);
+            let param = {
+                method: 'saveNoOfBed',
+                noOfBed: parseInt($('#txtBed').val()),
+                noOfIcuBed: parseInt($('#textIcuBed').val()),
+                empId: empId,
+                hospitalId: parseInt(hospId)
+            };
 
-                    axios
-                        .post("/api", param)
-                        .then((response) => {
-                            console.log(response);
-                            $('#txtBed').val(' ');
-                            $('#textIcuBed').val(' ');
-                        }).catch((err) => {
-                            console.log(err);
-                        });
+            console.log(param);
 
-                setTimeout(
-                    function () {
-                        $('#dvNotification').html(`<div> Thanks for entering the details <br> <a href='/potentiallist'>Click here for go back to Hospital List</a></div>`);
-                        $('.loader-wrapper').addClass('none');
-                    }
-                    , 5000);
+            axios
+                .post("/api", param)
+                .then((response) => {
+                    console.log(response);
+                    $('#txtBed').val(' ');
+                    $('#textIcuBed').val(' ');
+                }).catch((err) => {
+                    console.log(err);
+                });
+
+            setTimeout(
+                function () {
+                    $('#dvNotification').html(`<div> Thanks for entering the details <br> <a href='/potentiallist'>Click here for go back to Hospital List</a></div>`);
+                    $('.loader-wrapper').addClass('none');
+                }
+                , 5000);
         }
 
         function setUpPage() {

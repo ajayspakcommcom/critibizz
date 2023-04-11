@@ -1,4 +1,4 @@
-const _POSTLOGINURL = '/chart',
+const _POSTLOGINURL = '/chart1',
     _POST_5TH_USER_IS_ALLOWED_TO_ENTER_ACTUALS = true,
     _CUT_OF_DATE_OF_MONTH = 5,
     _ADMINROLE = 'ADMIN';
@@ -89,21 +89,21 @@ function setupTopNav() {
 }
 
 function isUserLoggedIn() {
-   // console.log('check user is logged in or not')
-   let adminLink = $('#adminReport'),
+    // console.log('check user is logged in or not')
+    let adminLink = $('#adminReport'),
         userData = JSON.parse(localStorage.getItem("userData"));
 
     adminLink.show();
     const urlPathName = window.location.pathname;
     if ((urlPathName.substring(1) == '') || (urlPathName.substring(1) == 'index')) {
-      //  console.log('user is on home page')
+        //  console.log('user is on home page')
     } else {
         if (!userData) {
             document.location.href = '/index'
         }
     }
     if (userData) {
-       // $('#spUserFullName').text('Hello ' + camelCaseText(userData.name) +'('+ +')');
+        // $('#spUserFullName').text('Hello ' + camelCaseText(userData.name) +'('+ +')');
         $('#spUserFullName').text(`Hello ${camelCaseText(userData.name)} (${(userData.post)})`);
         if (userData.post === _ADMINROLE) {
             adminLink.show();
@@ -166,7 +166,7 @@ function goBack() {
 
 function toggleGoBackLink() {
     const urlPathName = window.location.pathname;
-   // console.log(urlPathName.substring(1));
+    // console.log(urlPathName.substring(1));
     const topLink = document.querySelector('#toplinks');
     const goBackLink = document.querySelector('#gobacklink');
     if ((urlPathName.substring(1) == '') || (urlPathName.substring(1) == 'thankyou') || (urlPathName.substring(1) == 'index')) {
