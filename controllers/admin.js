@@ -18,7 +18,15 @@ exports.getAdminReportData = (req, res, next) => {
   console.log('admin controller -->' + req.query.method)
   //return res.status(200).json(_loadFilter(req.body));
   _getNewAdminReportData(req.body).then((response) => {
-    res.status(200).json(response.recordset);
+    res.status(200).json(response.recordsets);
+  });
+}
+
+exports.getAdminReportDataActuals = (req, res, next) => {
+  console.log('admin controller -->' + req.query.method)
+  //return res.status(200).json(_loadFilter(req.body));
+  _getAdminReportDataActuals(req.body).then((response) => {
+    res.status(200).json(response.recordsets);
   });
 }
 
@@ -75,6 +83,40 @@ function _getAdminReportData(objParam) {
   });
 }
 
+//
+
+function _getAdminReportDataActuals(objParam) {
+  console.log(arguments)
+  console.log('---------------------------')
+  let response;
+  return new Promise((resolve) => {
+    var dbConn = new sql.ConnectionPool(config);
+    dbConn
+      .connect()
+      .then(function () {
+        var request = new sql.Request(dbConn);
+        request
+          //.input("month", sql.SmallInt, objParam.mon)
+          .input("year", sql.SmallInt, objParam.year)
+          .input("secondYear", sql.SmallInt, objParam.year)
+          .input("hospitalId", sql.Int, ((objParam.hospitalId) || null))
+          .input("medId", sql.Int, ((objParam.medId) || null))
+          .input("kamId", sql.Int, ((objParam.kamId) || null))
+          .execute("USP_RBM_REPORT_v7_1")
+          .then(function (resp) {
+            resolve(resp);
+            dbConn.close();
+          })
+          .catch(function (err) {
+            //console.log(err);
+            dbConn.close();
+          });
+      })
+      .catch(function (err) {
+        //console.log(err);
+      });
+  });
+}
 
 function _getNewAdminReportData(objParam) {
   console.log(arguments)
@@ -98,7 +140,7 @@ function _getNewAdminReportData(objParam) {
           .input("zbmId", sql.Int, ((objParam.zbmId) || null))
           .input("zoneId", sql.Int, ((objParam.zoneId) || null))
           
-          .execute("USP_RBM_REPORT")
+          .execute("USP_RBM_REPORT_v7")
           .then(function (resp) {
             resolve(resp);
             dbConn.close();

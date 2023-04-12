@@ -1,7 +1,8 @@
 const _POSTLOGINURL = '/chart1',
     _POST_5TH_USER_IS_ALLOWED_TO_ENTER_ACTUALS = true,
     _CUT_OF_DATE_OF_MONTH = 5,
-    _ADMINROLE = 'ADMIN';
+    _ADMINROLE = 'ADMIN',
+    _POSTLOGINADMINURL = '/admin-report';
 
 function validateAdminUserDetails() {
     if ($("#username").val() === "") {
@@ -27,7 +28,12 @@ function validateAdminUserDetails() {
             console.log(response.data.success);
             console.log(response.data)
             localStorage.setItem("userData", JSON.stringify(response.data.userDetiails));
-            (response.data.success === true) ? (document.location.href = _POSTLOGINURL) : $('#lblmsg').text(response.data.msg)
+
+            if(response.data.userDetiails.post.toLowerCase() === 'admin') {
+                (response.data.success === true) ? (document.location.href = _POSTLOGINADMINURL) : $('#lblmsg').text(response.data.msg)
+            } else {
+                (response.data.success === true) ? (document.location.href = _POSTLOGINURL) : $('#lblmsg').text(response.data.msg)
+            }
         })
         .catch((err) => {
             console.log("inside catch");
@@ -89,21 +95,21 @@ function setupTopNav() {
 }
 
 function isUserLoggedIn() {
-    // console.log('check user is logged in or not')
-    let adminLink = $('#adminReport'),
+   // console.log('check user is logged in or not')
+   let adminLink = $('#adminReport'),
         userData = JSON.parse(localStorage.getItem("userData"));
 
     adminLink.show();
     const urlPathName = window.location.pathname;
     if ((urlPathName.substring(1) == '') || (urlPathName.substring(1) == 'index')) {
-        //  console.log('user is on home page')
+      //  console.log('user is on home page')
     } else {
         if (!userData) {
             document.location.href = '/index'
         }
     }
     if (userData) {
-        // $('#spUserFullName').text('Hello ' + camelCaseText(userData.name) +'('+ +')');
+       // $('#spUserFullName').text('Hello ' + camelCaseText(userData.name) +'('+ +')');
         $('#spUserFullName').text(`Hello ${camelCaseText(userData.name)} (${(userData.post)})`);
         if (userData.post === _ADMINROLE) {
             adminLink.show();
@@ -166,7 +172,7 @@ function goBack() {
 
 function toggleGoBackLink() {
     const urlPathName = window.location.pathname;
-    // console.log(urlPathName.substring(1));
+   // console.log(urlPathName.substring(1));
     const topLink = document.querySelector('#toplinks');
     const goBackLink = document.querySelector('#gobacklink');
     if ((urlPathName.substring(1) == '') || (urlPathName.substring(1) == 'thankyou') || (urlPathName.substring(1) == 'index')) {

@@ -34,29 +34,12 @@ app.use(bodyParser.raw());
 app.use(cookieParser());
 app.use(adminRoutes);
 
-// const config = {
-//   server: "N1NWPLSK12SQL-v03.shr.prod.ams1.secureserver.net",
-//   user: "aasha",
-//   password: "2!Oryc83",
-//   port: 1433,
-//   database: "aasha-bsvwithu",
-//   pool: {
-//     max: 10,
-//     min: 0,
-//     idleTimeoutMillis: 30000,
-//   },
-//   options: {
-//     encrypt: true, // for azure
-//     trustServerCertificate: true, // change to true for local dev / self-signed certs
-//   },
-// };
-
 const config = {
-  server: "P3NWPLSK12SQL-v15.shr.prod.phx3.secureserver.net",
-  user: "spakDb",
-  password: "Spak@123-",
+  server: "N1NWPLSK12SQL-v03.shr.prod.ams1.secureserver.net",
+  user: "aasha",
+  password: "2!Oryc83",
   port: 1433,
-  database: "bsvDb",
+  database: "aasha-bsvwithu",
   pool: {
     max: 10,
     min: 0,
@@ -167,7 +150,7 @@ app.post("/api", (req, res) => {
             }
           } else {
             success = false;
-            msg = 'You are not authorized to login to the system';
+            msg = 'You are not authorized to login to the system'  ;
           }
 
         } else {
@@ -184,7 +167,7 @@ app.post("/api", (req, res) => {
         };
         session = req.session;
         session.userid = req.body.username;
-        // console.log(req.session)
+       // console.log(req.session)
         res.status(200).json(response);
       });
       break;
@@ -193,19 +176,19 @@ app.post("/api", (req, res) => {
         res.status(200).json(response.recordset);
       });
       break;
-    case "getMyKamlist":
-      _getMyKamlist(req.body).then((response) => {
+      case "getMyKamlist":
+        _getMyKamlist(req.body).then((response) => {
         res.status(200).json(response.recordsets);
       });
       break;
 
-    case "getEmpDetails":
-      _getEmpDetails(req.body).then((response) => {
+      case "getEmpDetails":
+        _getEmpDetails(req.body).then((response) => {
         res.status(200).json(response.recordset);
       });
       break;
 
-    //
+      //
     case "dataLog":
 
       _dataLog(req.body).then((response) => {
@@ -228,17 +211,17 @@ app.post("/api", (req, res) => {
       });
       break;
 
-    case "getMychildforOrgChart1":
+      case "getMychildforOrgChart1":
       _getMychildforOrgChart1(req.body).then((response) => {
         res.status(200).json(response.recordsets);
       });
       break;
 
-    case "myChildHospitalList":
-      _myChildHospitalList(req.body).then((response) => {
-        res.status(200).json(response.recordsets[1]);
-      });
-      break;
+      case "myChildHospitalList":
+        _myChildHospitalList(req.body).then((response) => {
+          res.status(200).json(response.recordsets[1]);
+        });
+        break;
     //
     case "loadDataForReport1":
 
@@ -267,12 +250,12 @@ app.post("/api", (req, res) => {
         res.status(200).json(response.recordsets);
       });
       break;
-    //
-    case "getHospitalListByEmp":
-      _getHospitalListByEmp(req.body).then((response) => {
-        res.status(200).json(response.recordset);
-      });
-      break;
+      //
+      case "getHospitalListByEmp":
+        _getHospitalListByEmp(req.body).then((response) => {
+          res.status(200).json(response.recordset);
+        });
+        break;
 
     case "getManagersList":
       _getManagersList(req.body).then((response) => {
@@ -297,17 +280,17 @@ app.post("/api", (req, res) => {
         res.status(200).json(response);
       });
       break;
-    case "saveHospitalPotentials":
-      _saveHospitalPotentials(req.body).then((response) => {
+      case "saveHospitalPotentials":
+        _saveHospitalPotentials(req.body).then((response) => {
         //console.log(response)
         res.status(200).json(response);
       });
       break;
 
-    case 'saveNoOfBed':
-      _saveNoOfBed(req.body).then((response) => {
-        res.status(200).json(response);
-      });
+      case 'saveNoOfBed':
+        _saveNoOfBed(req.body).then((response) => {
+          res.status(200).json(response);
+        });
       break;
 
     //
@@ -321,7 +304,7 @@ app.post("/api", (req, res) => {
         res.status(200).json({ message: "badge earned sucessfully" });
       });
       break;
-
+ 
 
     // case "bucket":
     //   questionHTML = renderBucketQuestion(matchingQuestion);
@@ -437,12 +420,12 @@ function _saveHospitalTargets(objParam) {
             dbConn.close();
           })
           .catch(function (err) {
-            //         console.log(err);
+   //         console.log(err);
             dbConn.close();
           });
       })
       .catch(function (err) {
-        //   console.log(err);
+     //   console.log(err);
       });
   });
 }
@@ -467,12 +450,12 @@ function _saveHospitalPotentials(objParam) {
             dbConn.close();
           })
           .catch(function (err) {
-            //console.log(err);
+          //console.log(err);
             dbConn.close();
           });
       })
       .catch(function (err) {
-        //console.log(err);
+      //console.log(err);
       });
   });
 }
@@ -527,12 +510,12 @@ function _loadDataForReport1(objParam) {
             dbConn.close();
           })
           .catch(function (err) {
-            //        console.log(err);
+    //        console.log(err);
             dbConn.close();
           });
       })
       .catch(function (err) {
-        //  console.log(err);
+      //  console.log(err);
       });
   });
 }
@@ -565,7 +548,7 @@ function _userLogin(objParam) {
 }
 
 function _getMedicine(objParam) {
-  //  console.log(objParam)
+//  console.log(objParam)
   let response;
   return new Promise((resolve) => {
     var dbConn = new sql.ConnectionPool(config);
@@ -574,7 +557,7 @@ function _getMedicine(objParam) {
       .then(function () {
         var request = new sql.Request(dbConn);
         request
-          .input("portalCode", sql.NVarChar, 'PATH2CARE,CRITIBIZZ')
+        .input("portalCode", sql.NVarChar, 'PATH2CARE,CRITIBIZZ')
           .execute("USP_GET_MEDICINES_LIST")
           .then(function (resp) {
             //console.log(resp);
@@ -603,7 +586,7 @@ function _getMyKamlist(objParam) {
       .then(function () {
         var request = new sql.Request(dbConn);
         request
-          .input("empId", sql.Int, objParam.empId)
+        .input("empId", sql.Int, objParam.empId)
           .execute("USP_GET_ALL_EMPLOYEES_UNDER_ME_v1")
           .then(function (resp) {
             //console.log(resp);
@@ -631,7 +614,7 @@ function _getEmpDetails(objParam) {
       .then(function () {
         var request = new sql.Request(dbConn);
         request
-          .input("empId", sql.Int, objParam.empId)
+        .input("empId", sql.Int, objParam.empId)
           .execute("USP_GET_EMPLOYEE_DETAILS")
           .then(function (resp) {
             //console.log(resp);
@@ -838,23 +821,23 @@ function _getMychildforOrgChart(objParam) {
   return new Promise((resolve) => {
     var dbConn = new sql.ConnectionPool(config);
     dbConn.connect().then(function () {
-      var request = new sql.Request(dbConn);
-      request
-        .input("month", sql.SmallInt, objParam.mon)
-        .input("year", sql.SmallInt, objParam.year)
-        .input("empid", sql.SmallInt, objParam.empId)
-        .execute("USP_GET_CHART_RECORDS_v1")
-        .then(function (resp) {
-          //console.log(resp);
-          //_processHirarchyData(resp);
-          resolve(resp);
-          dbConn.close();
-        })
-        .catch(function (err) {
-          //console.log(err);
-          dbConn.close();
-        });
-    })
+        var request = new sql.Request(dbConn);
+        request
+          .input("month", sql.SmallInt, objParam.mon)
+          .input("year", sql.SmallInt, objParam.year)
+          .input("empid", sql.SmallInt, objParam.empId)
+          .execute("USP_GET_CHART_RECORDS_v1")
+          .then(function (resp) {
+            //console.log(resp);
+            //_processHirarchyData(resp);
+            resolve(resp);
+            dbConn.close();
+          })
+          .catch(function (err) {
+            //console.log(err);
+            dbConn.close();
+          });
+      })
       .catch(function (err) {
         //console.log(err);
       });
@@ -870,23 +853,23 @@ function _getMychildforOrgChart1(objParam) {
   return new Promise((resolve) => {
     var dbConn = new sql.ConnectionPool(config);
     dbConn.connect().then(function () {
-      var request = new sql.Request(dbConn);
-      request
-        .input("month", sql.SmallInt, objParam.mon)
-        .input("year", sql.SmallInt, objParam.year)
-        .input("empid", sql.SmallInt, objParam.empId)
-        .execute("USP_GET_CHART_RECORDS_v2")
-        .then(function (resp) {
-          //console.log(resp);
-          //_processHirarchyData(resp);
-          resolve(resp);
-          dbConn.close();
-        })
-        .catch(function (err) {
-          //console.log(err);
-          dbConn.close();
-        });
-    })
+        var request = new sql.Request(dbConn);
+        request
+          .input("month", sql.SmallInt, objParam.mon)
+          .input("year", sql.SmallInt, objParam.year)
+          .input("empid", sql.SmallInt, objParam.empId)
+          .execute("USP_GET_CHART_RECORDS_v2")
+          .then(function (resp) {
+            //console.log(resp);
+            //_processHirarchyData(resp);
+            resolve(resp);
+            dbConn.close();
+          })
+          .catch(function (err) {
+            //console.log(err);
+            dbConn.close();
+          });
+      })
       .catch(function (err) {
         //console.log(err);
       });
@@ -1034,7 +1017,7 @@ function getdataQuery() {
           });
       })
       .catch(function (err) {
-        // console.log(err); // ajay
+        // console.log(err);
       });
   });
 }

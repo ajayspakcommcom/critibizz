@@ -6,6 +6,7 @@ const express = require('express'),
       router.get('/admin-report', adminController.getAdminReport)
       router.get('/admin/api', adminController.getAdminFilters)
       router.post('/admin/api', adminController.getAdminReportData)
+      router.post('/admin/api/actuals', adminController.getAdminReportDataActuals)
    
 
 

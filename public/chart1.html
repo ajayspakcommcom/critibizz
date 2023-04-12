@@ -66,6 +66,15 @@
   <script src="js/app.js"></script>
   <script>
 
+    function gotoKamList(stateId, stateName) {
+
+      let month, year;
+      month = $('#cmbMonth').val();
+      year = $('#cmbYear').val();
+
+      //console.log(` State Id: ${stateId}, State Name: ${stateName}, Month: ${month}, Year: ${year}`);
+      window.location.href = `my-kam-list?id=${stateId}&name=${stateName}&mon=${month}&year=${year}`;
+    }
 
     function drawRegionsMap() {
 
@@ -127,7 +136,7 @@
               }
             }
           })
-          console.log(data[0].medicineDetails)
+          //console.log(data[0].medicineDetails)
           let showHtml = []
           data.forEach(rec => {
             let medicineDetails = [];
@@ -139,21 +148,23 @@
                                 </tr>`)
             })
 
+            console.log('show HTML', rec);
+
             showHtml.push(`<div>
-                          <h2>${rec.stateName}</h2>
+                          <h2 onclick="gotoKamList(${rec.stateId}, '${rec.stateName}')">${rec.stateName}</h2>
                           <b> Total hospitals:${rec.hospitalCount} </b>
                           <table border="1" class="addPotentialTable home-table">
                               <tr> 
                                   <td>Brand </td>
                                   <td>Potential</td>
                                   <td>Actual</td>
-                                  
                               </tr>
                                     ${medicineDetails.join('')}                                     
                               </tr>
                           </table>
                         </div>`)
           });
+
           $('#myhospitalMedDetails').html(showHtml.join(''));
           $('.loader-wrapper').addClass('none');
 

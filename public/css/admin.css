@@ -2429,7 +2429,7 @@ div#lblmsg {
 .hospital-grid-container1 > div {
   padding: 20px 20px; 
   margin-right: 20px !important;
-  max-width: 211px;
+  max-width: 230px;
 }
 
 .hospital-grid-container1 > div table {
@@ -2440,6 +2440,10 @@ div#lblmsg {
   background-color: #0075c1;
   color:#fff !important;
   font-weight: 600;
+}
+
+#divTotalHospitals {
+  margin-bottom: 10px;
 }
 
 /* Large Screen Typography  - Scale: 1.414 Augmented Fourth (thanks http://type-scale.com/)  */
@@ -2459,7 +2463,16 @@ div#lblmsg {
 	p { font-size:1.125em; }
 
 	p.intro { font-size:1.4em; }
+}
 
+.admin-header > tbody > tr:first-child > td {
+  background-color: rgb(249, 249, 249);
+  color: #000 !important;
+  font-weight: 100;
+}
+
+.admin-header > tbody > tr:last-child > td {
+  font-weight: 600;
 }
 
 /**Side Menu**/

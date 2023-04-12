@@ -10,74 +10,72 @@
 </div>
 
 <div class="login-pop screen-1">
-  <div class="modal fade in" id="myModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body">
-          <div class="text-center">
-            <h2 class="project-name">
-              <img src="img/critibizz.png" alt="" />
-            </h2>
-            <div id="lblmsg"></div>
-            <form class="login-form" id="frm1" method="post" action="/api"
-              onsubmit="validateAdminUserDetails();return false;">
-              <div class="form-group">
-                <label for="usr">Username</label>
-                <input type="text" placeholder="test@bsv.com" id="username" name="username" class="form-control"
-                  id="usr" value="">
-              </div>
-
-              <div class="form-group">
-                <label for="pwd">Password</label>
-                <input type="password" id="password" name="password" placeholder="password" class="form-control"
-                  id="pwd" value="BSV@112233">
-              </div>
-
-              <div class="login-btn-wrapper">
-                <button class="btn btn-default btn-grad">Sign In</button>
-              </div>
-              <!-- <div class="forgot-pass">
+    <div class="modal fade in" id="myModal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="text-center">
+              <h2 class="project-name">
+                <img src="img/critibizz.png" alt="" />
+              </h2>
+              <div id="lblmsg"></div>
+              <form class="login-form" id="frm1" method="post" action="/api"  onsubmit="validateAdminUserDetails(); return false;">
+                <div class="form-group">
+                  <label for="usr">Username</label>
+                  <input type="text" placeholder="test@bsv.com" id="username" name="username" class="form-control" id="usr" value="vishal.bajaj@bsvgroup.com" />
+                </div>
+  
+                <div class="form-group">
+                  <label for="pwd">Password</label>
+                  <input type="password" id="password" name="password" placeholder="password" class="form-control" id="pwd" value="BSV@112233" />
+                </div>
+                  
+                  <div class="login-btn-wrapper">
+                    <button class="btn btn-default btn-grad">Sign In</button>
+                  </div>
+                  <!-- <div class="forgot-pass">
                     <a href="#">Forgot Password?</a>
                   </div> -->
 
-            </form>
+              </form>
+             
 
-
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
 <!-- <button>Login</button>
 </form>  -->
 
 <div class="copyright">
-  <p>
-    Copyright @ 2022 Bharat Serums and Vaccines Limited (BSV) <br /> Privacy Policy
-  </p>
-</div>
+    <p>
+      Copyright @ 2022 Bharat Serums and Vaccines Limited (BSV) <br /> Privacy Policy
+    </p>
+  </div>
 
-<img src="img/laxshya-logo.png" alt="laxshya logo" class="img-responsive laxshya-logo" />
+  <img src="img/laxshya-logo.png" alt="laxshya logo" class="img-responsive laxshya-logo" />
 
 <script src="js/jquery.min.js"></script>
 <script src="js/app.js"></script>
 
 <script>
 
-  setupTopNav();
-
-  function changeLogo() {
+setupTopNav();
+    
+function changeLogo() {
     const windowWidth = $(window).width();
-
-    if (windowWidth < 768) {
+    
+    if(windowWidth < 768) {
       $('[src="img/laxshya-logo.png"]').attr('src', 'img/laxshya-logo-m.png');
       setTimeout(() => {
         $('[src="img/logo.png"]').attr('src', 'img/logo-m.png');
       }, 1000);
     }
   }
-
+  
   changeLogo();
 </script>
+
