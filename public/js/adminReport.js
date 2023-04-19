@@ -161,7 +161,7 @@ async function getAdminReport() {
         list.forEach((item) => {
             let actuals = res2.data[0].filter(data => {
                 //console.log(data.MedID, data.hospitalId)
-                return data.MedID == item.medID && data.hospitalId == item.hospitalId
+                return data.medId == item.medID && data.hospitalId == item.hospitalId
             });
             console.log(actuals)
             let apr, may, june,
