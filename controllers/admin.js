@@ -32,12 +32,30 @@ exports.getAdminReportDataActuals = (req, res, next) => {
 
 
 
+// const config = {
+//   server: "N1NWPLSK12SQL-v03.shr.prod.ams1.secureserver.net",
+//   user: "aasha",
+//   password: "2!Oryc83",
+//   port: 1433,
+//   database: "aasha-bsvwithu",
+//   pool: {
+//     max: 10,
+//     min: 0,
+//     idleTimeoutMillis: 30000,
+//   },
+//   options: {
+//     encrypt: true, // for azure
+//     trustServerCertificate: true, // change to true for local dev / self-signed certs
+//   },
+// };
+
+
 const config = {
-  server: "N1NWPLSK12SQL-v03.shr.prod.ams1.secureserver.net",
-  user: "aasha",
-  password: "2!Oryc83",
+  server: "P3NWPLSK12SQL-v15.shr.prod.phx3.secureserver.net",
+  user: "spakDb",
+  password: "Spak@123-",
   port: 1433,
-  database: "aasha-bsvwithu",
+  database: "bsvDb",
   pool: {
     max: 10,
     min: 0,
@@ -86,7 +104,7 @@ function _getAdminReportData(objParam) {
 //
 
 function _getAdminReportDataActuals(objParam) {
-  console.log(arguments)
+  console.log(objParam)
   console.log('---------------------------')
   let response;
   return new Promise((resolve) => {
@@ -108,18 +126,19 @@ function _getAdminReportDataActuals(objParam) {
             dbConn.close();
           })
           .catch(function (err) {
-            //console.log(err);
+            console.log(err);
             dbConn.close();
           });
       })
       .catch(function (err) {
-        //console.log(err);
+        console.log('Ajay');
+        console.log(err);
       });
   });
 }
 
 function _getNewAdminReportData(objParam) {
-  console.log(arguments)
+  console.log(objParam)
   console.log('---------------------------')
   let response;
   return new Promise((resolve) => {
@@ -139,7 +158,7 @@ function _getNewAdminReportData(objParam) {
           .input("rbmId", sql.Int, ((objParam.rbmId) || null))
           .input("zbmId", sql.Int, ((objParam.zbmId) || null))
           .input("zoneId", sql.Int, ((objParam.zoneId) || null))
-          
+
           .execute("USP_RBM_REPORT_v7")
           .then(function (resp) {
             resolve(resp);

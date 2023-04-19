@@ -30,6 +30,7 @@ function reset() {
 
 
 function setUpPage() {
+
     setupAdminReport();
     let monthArr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2],
         month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -59,6 +60,7 @@ function setUpPage() {
     }
 
 }
+
 function getReportFilters() {
     let params = {
         method: 'getAdminReportFilters'
@@ -130,7 +132,7 @@ async function getAdminReport() {
         zoneId: parseInt($('#cmbZone').val())
     };
 
-   
+
 
     let paramActuals = {
         method: 'getAdminReportActuals',
@@ -147,9 +149,9 @@ async function getAdminReport() {
     // const axiosrequestEast = axios.post("/admin/api", paramEast);
     const axiosrequestWest = axios.post("/admin/api", param);
     const axiosrequest2 = axios.post("/admin/api/actuals", paramActuals);
-    await axios.all([axiosrequestWest,  axiosrequest2]).then(axios.spread(function (res1, res2) {
+    await axios.all([axiosrequestWest, axiosrequest2]).then(axios.spread(function (res1, res2) {
+
         console.log(res1.data[0]);
-        
         console.log(res2.data[0]);
 
         let list = res1.data[0],
@@ -162,66 +164,65 @@ async function getAdminReport() {
                 return data.MedID == item.medID && data.hospitalId == item.hospitalId
             });
             console.log(actuals)
-            let apr,  may, june, 
-                july, aug, sep, 
+            let apr, may, june,
+                july, aug, sep,
                 oct, nov, dec,
                 jan, feb, march;
 
-                apr = actuals.find(data => {
-                    return data.ActualsEnteredFor.split('-')[1] == 4;
-                })
-                
-                may = actuals.find(data => {
-                    return data.ActualsEnteredFor.split('-')[1] == 5;
-                })
-                june = actuals.find(data => {
-                    return data.ActualsEnteredFor.split('-')[1] == 6;
-                })
+            apr = actuals.find(data => {
+                return data.ActualsEnteredFor.split('-')[1] == 4;
+            })
 
-                july = actuals.find(data => {
-                    return data.ActualsEnteredFor.split('-')[1] == 7;
-                })
-                aug = actuals.find(data => {
-                    return data.ActualsEnteredFor.split('-')[1] == 8;
-                })
-                sep = actuals.find(data => {
-                    return data.ActualsEnteredFor.split('-')[1] == 9;
-                })
+            may = actuals.find(data => {
+                return data.ActualsEnteredFor.split('-')[1] == 5;
+            })
+            june = actuals.find(data => {
+                return data.ActualsEnteredFor.split('-')[1] == 6;
+            })
 
-                oct = actuals.find(data => {
-                    return data.ActualsEnteredFor.split('-')[1] == 10;
-                })
-                nov = actuals.find(data => {
-                    return data.ActualsEnteredFor.split('-')[1] == 11;
-                })
-                dec = actuals.find(data => {
-                    return data.ActualsEnteredFor.split('-')[1] == 12;
-                })
+            july = actuals.find(data => {
+                return data.ActualsEnteredFor.split('-')[1] == 7;
+            })
+            aug = actuals.find(data => {
+                return data.ActualsEnteredFor.split('-')[1] == 8;
+            })
+            sep = actuals.find(data => {
+                return data.ActualsEnteredFor.split('-')[1] == 9;
+            })
+
+            oct = actuals.find(data => {
+                return data.ActualsEnteredFor.split('-')[1] == 10;
+            })
+            nov = actuals.find(data => {
+                return data.ActualsEnteredFor.split('-')[1] == 11;
+            })
+            dec = actuals.find(data => {
+                return data.ActualsEnteredFor.split('-')[1] == 12;
+            })
+
+            jan = actuals.find(data => {
+                return data.ActualsEnteredFor.split('-')[1] == 1;
+            })
+            feb = actuals.find(data => {
+                return data.ActualsEnteredFor.split('-')[1] == 2;
+            })
+            mar = actuals.find(data => {
+                return data.ActualsEnteredFor.split('-')[1] == 3;
+            })
+            let aprValue = (apr) ? apr.ActualTarget : '0',
+                mayValue = (may) ? may.ActualTarget : '0',
+                juneValue = (june) ? june.ActualTarget : '0',
+                julyValue = (july) ? july.ActualTarget : '0',
+                augValue = (aug) ? aug.ActualTarget : '0',
+                sepValue = (sep) ? sep.ActualTarget : '0',
+                octValue = (oct) ? oct.ActualTarget : '0',
+                novValue = (nov) ? nov.ActualTarget : '0',
+                decValue = (dec) ? dec.ActualTarget : '0',
+                janValue = (jan) ? jan.ActualTarget : '0',
+                febValue = (feb) ? feb.ActualTarget : '0',
+                marValue = (mar) ? mar.ActualTarget : '0';
 
 
-                jan = actuals.find(data => {
-                    return data.ActualsEnteredFor.split('-')[1] == 1;
-                })
-                feb = actuals.find(data => {
-                    return data.ActualsEnteredFor.split('-')[1] == 2;
-                })
-                mar = actuals.find(data => {
-                    return data.ActualsEnteredFor.split('-')[1] == 3;
-                })
-                let aprValue = (apr) ? apr.ActualTarget : '0',
-                    mayValue = (may) ? may.ActualTarget : '0',
-                    juneValue = (june) ? june.ActualTarget : '0',
-                    julyValue = (july) ? july.ActualTarget : '0',
-                    augValue = (aug) ? aug.ActualTarget : '0',
-                    sepValue = (sep) ? sep.ActualTarget : '0',
-                    octValue = (oct) ? oct.ActualTarget : '0',
-                    novValue = (nov) ? nov.ActualTarget : '0',
-                    decValue = (dec) ? dec.ActualTarget : '0',
-                    janValue = (jan) ? jan.ActualTarget : '0',
-                    febValue = (feb) ? feb.ActualTarget : '0',
-                    marValue = (mar) ? mar.ActualTarget : '0';
-
-                
 
             // if (actuals[0]) {
             //     apr = (actuals[0].ActualsEnteredFor) ? ((actuals[0].ActualsEnteredFor.split('-')[1] == 4)? actuals[0].ActualTarget : '0') : 'N/A'
