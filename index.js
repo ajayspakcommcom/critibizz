@@ -559,7 +559,8 @@ function _getMedicine(objParam) {
       .then(function () {
         var request = new sql.Request(dbConn);
         request
-          .input("portalCode", sql.NVarChar, 'PATH2CARE,CRITIBIZZ')
+          //.input("portalCode", sql.NVarChar, 'PATH2CARE,CRITIBIZZ')
+          .input("portalCode", sql.NVarChar, 'CRITIBIZZ')
           .execute("USP_GET_MEDICINES_LIST")
           .then(function (resp) {
             //console.log(resp);

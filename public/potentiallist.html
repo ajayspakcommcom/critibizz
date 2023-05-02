@@ -51,7 +51,7 @@
                                     <strong>Add Monthly Units Consumption</strong>
                                 </div>
                             </div>
-                            
+
 
 
 
@@ -262,7 +262,10 @@
                     let showHtml = [];
                     let myTeamMemberList = [];
                     hospitalList.forEach((item) => {
-                        let mylist = camelCaseText(item.EmpName) + '_' + item.EmpID;
+                        let mylist = camelCaseText(item.EmpName) + '_' + item.EmpID, potentialSum;
+
+                        potentialSum = (parseInt(item.Thymogam) + parseInt(item.Amphonex) + parseInt(item.AGCuffill) + parseInt(item.UTryp) + parseInt(item.Octaplex) + parseInt(item.PolyMxB) + parseInt(item.Plasmanate));
+
                         if (!myTeamMemberList.includes(mylist)) {
                             myTeamMemberList.push(mylist)
                         }
@@ -282,7 +285,8 @@
                           <td>${item.Plasmanate}</td>
                           <td>${item.bedNo}</td>
                           <td>${item.ICUbedNo}</td>
-                          <td>${(item.sumTarget)? item.sumTarget : 0}</td>
+                          <!--<td>${(item.sumTarget) ? item.sumTarget : 0}</td>-->
+                          <td>${potentialSum}</td>
                           <td>
                             <a href="/addpotential?hospId=${item.hospitalId}" class="add-potential block-btn">Add Potential</a>
                             <a href="/addNoBed?hospId=${item.hospitalId}" class="add-potential block-btn m-b-0">Add No. Bed</a>

@@ -147,6 +147,7 @@ async function getAdminReport() {
     // const axiosrequestNorth = axios.post("/admin/api", paramNorth);
     // const axiosrequestSouth = axios.post("/admin/api", paramSouth);
     // const axiosrequestEast = axios.post("/admin/api", paramEast);
+
     const axiosrequestWest = axios.post("/admin/api", param);
     const axiosrequest2 = axios.post("/admin/api/actuals", paramActuals);
     await axios.all([axiosrequestWest, axiosrequest2]).then(axios.spread(function (res1, res2) {
@@ -163,31 +164,31 @@ async function getAdminReport() {
                 //console.log(data.MedID, data.hospitalId)
                 return data.medId == item.medID && data.hospitalId == item.hospitalId
             });
-            console.log(actuals)
+            console.log(actuals);
             let apr, may, june,
                 july, aug, sep,
                 oct, nov, dec,
-                jan, feb, march;
+                jan, feb, mar;
 
             apr = actuals.find(data => {
-                return data.ActualsEnteredFor.split('-')[1] == 4;
+                return data.ActualsEnteredFor.split('-')[1] == 04;
             })
 
             may = actuals.find(data => {
-                return data.ActualsEnteredFor.split('-')[1] == 5;
+                return data.ActualsEnteredFor.split('-')[1] == 05;
             })
             june = actuals.find(data => {
-                return data.ActualsEnteredFor.split('-')[1] == 6;
+                return data.ActualsEnteredFor.split('-')[1] == 06;
             })
 
             july = actuals.find(data => {
-                return data.ActualsEnteredFor.split('-')[1] == 7;
+                return data.ActualsEnteredFor.split('-')[1] == 07;
             })
             aug = actuals.find(data => {
-                return data.ActualsEnteredFor.split('-')[1] == 8;
+                return data.ActualsEnteredFor.split('-')[1] == 08;
             })
             sep = actuals.find(data => {
-                return data.ActualsEnteredFor.split('-')[1] == 9;
+                return data.ActualsEnteredFor.split('-')[1] == 09;
             })
 
             oct = actuals.find(data => {
@@ -201,14 +202,15 @@ async function getAdminReport() {
             })
 
             jan = actuals.find(data => {
-                return data.ActualsEnteredFor.split('-')[1] == 1;
+                return data.ActualsEnteredFor.split('-')[1] == 01;
             })
             feb = actuals.find(data => {
-                return data.ActualsEnteredFor.split('-')[1] == 2;
+                return data.ActualsEnteredFor.split('-')[1] == 02;
             })
             mar = actuals.find(data => {
-                return data.ActualsEnteredFor.split('-')[1] == 3;
+                return data.ActualsEnteredFor.split('-')[1] == 03;
             })
+
             let aprValue = (apr) ? apr.ActualTarget : '0',
                 mayValue = (may) ? may.ActualTarget : '0',
                 juneValue = (june) ? june.ActualTarget : '0',
@@ -238,6 +240,7 @@ async function getAdminReport() {
             //     feb = (actuals[0].ActualsEnteredFor) ? ((actuals[0].ActualsEnteredFor.split('-')[1] == 2)? actuals[0].ActualTarget : '0') : 'N/A'
             //     mar = (actuals[0].ActualsEnteredFor) ? ((actuals[0].ActualsEnteredFor.split('-')[1] == 3)? actuals[0].ActualTarget : '0') : 'N/A'
             // }
+
             showHtml.push(` 
             <tr>
                 <td class="clsadmin">${(item.name)}</td>
