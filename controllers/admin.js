@@ -191,7 +191,7 @@ function _loadFilter(objParam) {
             dbConn.close();
           })
           .catch(function (err) {
-            //console.log(err);
+            console.log(err);
             dbConn.close();
           });
       })

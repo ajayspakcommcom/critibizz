@@ -4,28 +4,28 @@ function loadComboBox(data, dropdown, displayValue, displayText, optionTextAlong
 
     let selectHeader = '';
 
-    switch(dropdown) {
+    switch (dropdown) {
         case 'cmbHosp':
             selectHeader = 'Select Hospital';
-        break;
+            break;
         case 'cmbRegion':
             selectHeader = 'Select State';
-        break;
+            break;
         case 'cmbBrandList':
             selectHeader = 'Select Brand';
-        break;
+            break;
         case 'cmbKam':
             selectHeader = 'Select KAM';
-        break;
+            break;
         case 'cmbRBM':
             selectHeader = 'Select RBM';
-        break;
+            break;
         case 'cmbZBM':
             selectHeader = 'Select ZBM';
-        break;
+            break;
         case 'cmbZone':
             selectHeader = 'Select Zone';
-        break;
+            break;
         default:
             selectHeader = '----Select----';
             break;
@@ -36,11 +36,13 @@ function loadComboBox(data, dropdown, displayValue, displayText, optionTextAlong
         let text = (item[displayText]) ? camelCaseText(item[displayText]) : '',
             optinalText = ((optionTextAlongWithDisplayText) ? item[optionTextAlongWithDisplayText] : ''),
             textPlusOptionl = text + ((optinalText.length > 0) ? ' - ' + optinalText.toUpperCase() : '');
+
         // console.log('-------------------------------------------')
         // console.log(text)
         // console.log(optinalText)
         // console.log()
         // console.log('-------------------------------------------')
+
         $('#' + dropdown).append(
             $('<option></option>').val(item[displayValue]).html((textPlusOptionl))
         );

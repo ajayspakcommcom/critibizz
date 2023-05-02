@@ -71,6 +71,7 @@ function getReportFilters() {
             params: params
         })
         .then((response) => {
+            console.log(response);
             let hospitalList = response.data[0],
                 stateList = response.data[1],
                 brandList = response.data[2],
@@ -102,7 +103,7 @@ function getReportFilters() {
             //LIST rbm
             loadComboBox(rbmList, 'cmbRBM', 'EmpID', 'firstName', 'Designation');
             //LIST zbm
-            loadComboBox(zbmList, 'cmbZBM', 'EmpID', 'firstName', 'designZone');
+            loadComboBox(zbmList, 'cmbZBM', 'EmpID', 'firstName', 'Designation');
             //LIST zone
             loadComboBox(zoneList, 'cmbZone', 'zoneID', 'name');
         });
