@@ -116,7 +116,7 @@ function _getAdminReportDataActuals(objParam) {
         request
           //.input("month", sql.SmallInt, objParam.mon)
           .input("year", sql.SmallInt, objParam.year)
-          .input("secondYear", sql.SmallInt, objParam.year)
+          .input("secondYear", sql.SmallInt, objParam.secondYear)
           .input("hospitalId", sql.Int, ((objParam.hospitalId) || null))
           .input("medId", sql.Int, ((objParam.medId) || null))
           .input("kamId", sql.Int, ((objParam.kamId) || null))
@@ -150,7 +150,7 @@ function _getNewAdminReportData(objParam) {
         request
           //.input("month", sql.SmallInt, objParam.mon)
           .input("year", sql.SmallInt, objParam.year)
-          .input("secondYear", sql.SmallInt, objParam.year)
+          .input("secondYear", sql.SmallInt, objParam.secondYear)
           .input("empId", sql.Int, ((objParam.empId) || null))
           .input("hospitalId", sql.Int, ((objParam.hospitalId) || null))
           .input("medId", sql.Int, ((objParam.medId) || null))
