@@ -52,27 +52,6 @@
             </div>
           </div>
 
-          <!-- <div class="hospital-grid-container hospital-grid-container1 myhospitalMedDetails" id="myhospitalMedDetails">
-            <div>
-              <h2>RAJASTHAN</h2>
-              <b> Total hospitals:1 </b>
-              <table border="1" class="addPotentialTable home-table">
-                <tbody>
-                  <tr>
-                    <td>Brand</td>
-                    <td>Potential</td>
-                    <td>Actual</td>
-                  </tr>
-                  <tr>
-                    <td>AG Cuffill </td>
-                    <td>0 </td>
-                    <td>0</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div> -->
-
           <div class="hospital-grid-container hospital-grid-container1 myhospitalMedDetails" id="myhospitalMedDetails">
           </div>
 
@@ -86,13 +65,6 @@
   </div>
   <script src="js/app.js"></script>
   <script>
-
-    const groupByKey = (array, key) => {
-      return array.reduce((result, currentValue) => {
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
-        return result;
-      }, {});
-    }
 
     function gotoKamList(stateId, stateName) {
 
@@ -118,43 +90,84 @@
       axios
         .post("/api", param)
         .then((response) => {
-          const arrData = response.data[0];
-          const groupedData = groupByKey(arrData, 'stateID');
-
-          let htmlData = [];
-          for (const key in groupedData) {
-
-            let brandData = [];
-
-            for (const item of groupedData[key]) {
-              brandData.push(`
-                        <tr>
-                          <td>${item.medicineName}</td>
-                          <td>${item.PotentialTarget}</td>
-                          <td>${item.Target}</td>
-                        </tr>
-                        `);
+          var tree = [];
+          let data1 = response.data[0];
+          data = [];
+          data1.forEach(s => {
+           
+            let rec = data.find(item => {
+              return item.stateId === s.StateID
+            })
+            if (!rec) {
+              data.push({
+                stateId: s.StateID,
+                stateName: s.StateName,
+                hopitalName: s.hospitalName,
+                hospitalCount: 1,
+                medicineDetails: [{
+                  medicineName: s.medicineName,
+                  count: s.Target,
+                  potentialCount: s.PotentialTarget
+                }]
+              });
+            } else {
+              // calculate hospital Count
+              if (rec.stateId === s.StateID && rec.hopitalName === s.hospitalName) {
+              } else {
+                // console.log('add 1')
+                rec.hopitalName = s.hospitalName,
+                  rec.hospitalCount++;
+              }
+              // calculate medicineCount
+              let medicineDetailRec = rec.medicineDetails.find(item => {
+                return item.medicineName === s.medicineName
+              });
+              if (medicineDetailRec) {
+                medicineDetailRec.count = (parseFloat(medicineDetailRec.count) + parseFloat(s.Target));
+                medicineDetailRec.potentialCount= (parseFloat(medicineDetailRec.potentialCount) + parseFloat(s.PotentialTarget)); 
+              } else {
+                rec.medicineDetails.push(
+                  {
+                    medicineName: s.medicineName,
+                    count: s.Target,
+                    potentialCount: s.PotentialTarget
+                  }
+                )
+              }
             }
+          })
+          //console.log(data[0].medicineDetails)
+          let showHtml = []
+          data.forEach(rec => {
+            let medicineDetails = [];
+            rec.medicineDetails.forEach(med => {
+              medicineDetails.push(` <tr> 
+                                  <td>${med.medicineName} </td>
+                                  <td>${med.potentialCount} </td>
+                                  <td>${med.count}</td>
+                                </tr>`)
+            })
 
-            htmlData.push(`
-                  <div>
-                    <h2 onclick="gotoKamList(${groupedData[key][0].stateID}, '${groupedData[key][0].StateName}')">${groupedData[key][0].StateName}</h2>
-                    <b> Total hospitals:${groupedData[key][0].HospitalCount}</b>
-                    <table border="1" class="addPotentialTable home-table">
-                      <tbody>
-                        <tr>
-                          <td>Brand</td>
-                          <td>Potential</td>
-                          <td>Actual</td>
-                        </tr>
-                        ${brandData.join('')}
-                      </tbody>
-                    </table>
-              </div>
-            `);
-          }
-          $('#myhospitalMedDetails').html(htmlData.join(''));
+            console.log('show HTML', rec);
+
+            showHtml.push(`<div>
+                          <h2 onclick="gotoKamList(${rec.stateId}, '${rec.stateName}')">${rec.stateName}</h2>
+                          <b> Total hospitals:${rec.hospitalCount} </b>
+                          <table border="1" class="addPotentialTable home-table">
+                              <tr> 
+                                  <td>Brand </td>
+                                  <td>Potential</td>
+                                  <td>Actual</td>
+                              </tr>
+                                    ${medicineDetails.join('')}                                     
+                              </tr>
+                          </table>
+                        </div>`)
+          });
+
+          $('#myhospitalMedDetails').html(showHtml.join(''));
           $('.loader-wrapper').addClass('none');
+
         });
     }
 

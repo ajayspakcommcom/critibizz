@@ -49,8 +49,6 @@ function loadComboBox(data, dropdown, displayValue, displayText, optionTextAlong
     });
 }
 
-
-
 function camelCaseText(str) {
     if (str) {
         let arr = str.split(" ");
@@ -68,4 +66,11 @@ function loadMonthYear() {
     let dt = new Date(date.getFullYear(), date.getMonth() - 1, 1);
     $('#cmbMonth').val(dt.getMonth() + 1); // our combo box starts with 1
     $('#cmbYear').val(dt.getFullYear());
+}
+
+const groupByKey = (array, key) => {
+    return array.reduce((result, currentValue) => {
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
+        return result;
+    }, {});
 }
