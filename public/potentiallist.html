@@ -261,6 +261,13 @@
                     let hids = [];
                     let showHtml = [];
                     let myTeamMemberList = [];
+
+
+                    console.log(hospitalList);
+
+                    hospitalList = hospitalList.filter(item => item.isActive !== 1);
+
+
                     hospitalList.forEach((item) => {
                         let mylist = camelCaseText(item.EmpName) + '_' + item.EmpID, potentialSum;
 
