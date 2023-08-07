@@ -27,7 +27,8 @@
                         <input type="text" id="txthids" />
                         <div class="hospi-detail-btn-wrapper">
                             <div class="form text-right">
-                                <button type="button" class="btn addActualBtn" onclick="showMyHospitalList()">List My Hospitals
+                                <button type="button" class="btn addActualBtn" onclick="showMyHospitalList()">List My
+                                    Hospitals
                                 </button>
                             </div>
                         </div>
@@ -69,14 +70,14 @@
 
     <script>
 
-        function showMyHospitalList(){
+        function showMyHospitalList() {
             //window.location.href
             let urlParams = new URLSearchParams(window.location.search),
                 mon = urlParams.get('mon') || 1,
                 year = urlParams.get('year') || 2022,
                 userData = JSON.parse(localStorage.getItem("userData"));
-                //console.log(`hospital-list?empId=${userData.empId}&mon=${mon}&year=${year}`)
-            window.location.href= `hospital-list?empId=${userData.empId}&mon=${mon}&year=${year}`;
+            //console.log(`hospital-list?empId=${userData.empId}&mon=${mon}&year=${year}`)
+            window.location.href = `hospital-list?empId=${userData.empId}&mon=${mon}&year=${year}`;
 
         }
 
@@ -97,8 +98,10 @@
                 .post("/api", param)
                 .then((response) => {
                     let urlParams = new URLSearchParams(window.location.search),
-                        kamLists = response.data[0],
+                        kamLists = response.data[0].filter(x => x.isActive === 0),
                         myHospitalCount = response.data[1][0].HospitalCount;
+
+                    console.log(kamLists);
 
                     if (myHospitalCount > 0 && userData.post.toLowerCase() !== 'zbm') {
                         // show my button
