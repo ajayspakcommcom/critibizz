@@ -120,7 +120,8 @@ function _getAdminReportDataActuals(objParam) {
           .input("hospitalId", sql.Int, ((objParam.hospitalId) || null))
           .input("medId", sql.Int, ((objParam.medId) || null))
           .input("kamId", sql.Int, ((objParam.kamId) || null))
-          .execute("USP_RBM_REPORT_v7_1")
+          //.execute("USP_RBM_REPORT_v7_1")
+          .execute("USP_Actual_REPORT")
           .then(function (resp) {
             resolve(resp);
             dbConn.close();
@@ -159,7 +160,8 @@ function _getNewAdminReportData(objParam) {
           .input("zbmId", sql.Int, ((objParam.zbmId) || null))
           .input("zoneId", sql.Int, ((objParam.zoneId) || null))
 
-          .execute("USP_RBM_REPORT_v7")
+          //.execute("USP_RBM_REPORT_v7")
+          .execute("USP_Potential_Report")
           .then(function (resp) {
             resolve(resp);
             dbConn.close();
