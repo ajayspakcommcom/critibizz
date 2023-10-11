@@ -96,6 +96,10 @@
 
     function gotoKamList(stateId, stateName) {
 
+      if (stateId === null) {
+        return;
+      }
+
       let month, year;
       month = $('#cmbMonth').val();
       year = $('#cmbYear').val();
