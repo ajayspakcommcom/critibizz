@@ -219,6 +219,12 @@ app.post("/api", (req, res) => {
       });
       break;
 
+    case "getMychildforOrgChart2":
+      _getMychildforOrgChart2(req.body).then((response) => {
+        res.status(200).json(response.recordsets);
+      });
+      break;
+
     case "myChildHospitalList":
       _myChildHospitalList(req.body).then((response) => {
         res.status(200).json(response.recordsets[1]);
@@ -863,8 +869,33 @@ function _getMychildforOrgChart1(objParam) {
         .input("empid", sql.SmallInt, objParam.empId)
         .execute("USP_GET_CHART_RECORDS_v2")
         .then(function (resp) {
-          //console.log(resp);
-          //_processHirarchyData(resp);
+          // console.log('response', resp);
+          resolve(resp);
+          dbConn.close();
+        })
+        .catch(function (err) {
+          //console.log(err);
+          dbConn.close();
+        });
+    })
+      .catch(function (err) {
+        //console.log(err);
+      });
+  });
+}
+
+function _getMychildforOrgChart2(objParam) {
+
+  return new Promise((resolve) => {
+    var dbConn = new sql.ConnectionPool(config);
+    dbConn.connect().then(function () {
+      var request = new sql.Request(dbConn);
+      request
+        .input("month", sql.SmallInt, objParam.mon)
+        .input("year", sql.SmallInt, objParam.year)
+        .input("empid", sql.SmallInt, objParam.empId)
+        .execute("spEmployeeState")
+        .then(function (resp) {
           resolve(resp);
           dbConn.close();
         })

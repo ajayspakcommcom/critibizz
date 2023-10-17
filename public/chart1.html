@@ -48,7 +48,7 @@
             </div>
 
             <div class="form">
-              <button type="button" onclick="drawRegionsMap();" class="btn">Go</button>
+              <button type="button" onclick="drawRegionsMap2();" class="btn">Go</button>
             </div>
           </div>
 
@@ -125,6 +125,8 @@
           const arrData = response.data[0];
           const groupedData = groupByKey(arrData, 'stateID');
 
+          console.log(arrData);
+
           let htmlData = [];
           for (const key in groupedData) {
 
@@ -162,9 +164,158 @@
         });
     }
 
+    function drawRegionsMap2() {
+
+      $('.loader-wrapper').removeClass('none');
+      let userData = JSON.parse(localStorage.getItem("userData"));
+
+      let param = {
+        parentId: 1,
+        method: 'getMychildforOrgChart2',
+        mon: $('#cmbMonth').val(),
+        year: $('#cmbYear').val(),
+        empId: parseInt(userData.empId)
+      };
+
+      const outPutData = [];
+      const outPutDataNoMatch = [];
+
+      axios
+        .post("/api", param)
+        .then((response) => response)
+        .then((res) => {
+
+          const states = res.data[0];
+
+          param.method = 'getMychildforOrgChart1';
+
+          axios
+            .post("/api", param)
+            .then((res) => {
+              const medicines = res.data[0];
+
+              states.forEach((stateItem) => {
+
+
+
+                medicines.forEach((medicineItem) => {
+
+                  if (medicineItem.stateID === stateItem.stateid) {
+                    outPutData.push(medicineItem);
+                  }
+
+                  if (medicineItem.stateID === null) {
+                    outPutDataNoMatch.push({
+                      stateId: stateItem.stateid, stateName: stateItem.StateName, MedicineName: medicineItem.medicineName
+                    });
+                  }
+
+                });
+              });
+
+              const groupedData = groupByKey(outPutData, 'stateID');
+
+              const brandData = [];
+              const htmlData = [];
+
+              for (let key in groupedData) {
+
+                for (const item of groupedData[key]) {
+                  brandData.push(`
+                                <tr>
+                                  <td>${item.medicineName}</td>
+                                  <td>${item.PotentialTarget}</td>
+                                  <td>${item.Target}</td>
+                                </tr>
+                                `);
+                }
+
+                htmlData.push(`
+                      <div>
+                        <h2 onclick="gotoKamList(${groupedData[key][0].stateID}, '${groupedData[key][0].StateName}')">${groupedData[key][0].StateName}</h2>
+                        <b> Total hospitals:${groupedData[key][0].HospitalCount}</b>
+                        <table border="1" class="addPotentialTable home-table">
+                          <tbody>
+                            <tr>
+                              <td>Brand</td>
+                              <td>Potential</td>
+                              <td>Actual</td>
+                            </tr>
+                            ${brandData.join('')}
+                          </tbody>
+                        </table>
+                  </div>
+                `);
+                brandData.length = 0
+              }
+
+              console.log(htmlData.length);
+
+              if (htmlData.length > 0) {
+                $('#myhospitalMedDetails').html(htmlData.join(''));
+              } else {
+                console.log(outPutDataNoMatch);
+
+                const groupedData = groupByKey(outPutDataNoMatch, 'stateId');
+
+
+                const noBrandData = [];
+                const noHtmlData = [];
+
+
+                for (let key in groupedData) {
+
+                  for (const item of groupedData[key]) {
+                    console.log(item);
+                    noBrandData.push(`
+                                <tr>
+                                  <td>${item.MedicineName}</td>
+                                  <td>${0}</td>
+                                  <td>${0}</td>
+                                </tr>
+                                `);
+                  }
+
+                  noHtmlData.push(`
+                      <div>
+                        <h2 onclick="gotoKamList(${groupedData[key][0].stateId}, '${groupedData[key][0].stateName}')">${groupedData[key][0].stateName}</h2>
+                        <b> Total hospitals:0</b>
+                        <table border="1" class="addPotentialTable home-table">
+                          <tbody>
+                            <tr>
+                              <td>Brand</td>
+                              <td>Potential</td>
+                              <td>Actual</td>
+                            </tr>
+                            ${noBrandData.join('')}
+                          </tbody>
+                        </table>
+                  </div>
+                `);
+                  noBrandData.length = 0
+                }
+
+
+                if (noHtmlData.length > 0) {
+                  $('#myhospitalMedDetails').html(noHtmlData.join(''));
+                }
+              }
+
+              $('.loader-wrapper').addClass('none');
+
+            })
+            .catch((err) => console.log(err));
+
+
+        }).catch((error) => {
+          console.log(error);
+        });
+    }
+
     setupTopNav()
     loadMonthYear();
-    drawRegionsMap();
+    //drawRegionsMap();
+    drawRegionsMap2();
 
   </script>
 
